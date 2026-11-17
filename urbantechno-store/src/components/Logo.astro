@@ -1,0 +1,25 @@
+---
+// Isotipo: U en degradado de la paleta con un rayo de energía dentro. Wordmark en Barlow Condensed.
+interface Props { size?: number; light?: boolean; class?: string; wordmark?: boolean }
+const { size = 36, light = false, class: cls = '', wordmark = true } = Astro.props;
+const id = `g${Math.random().toString(36).slice(2, 7)}`;
+---
+<span class={`logo ${light ? 'logo-light' : ''} ${cls}`}>
+  <svg class="logo-mark" width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
+    <defs><linearGradient id={id} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#30AFFF" /><stop offset="1" stop-color="#92EEFF" /></linearGradient></defs>
+    <rect width="64" height="64" rx="16" fill="#0B1B2B" />
+    <path d="M18 14v20a14 14 0 0 0 28 0V14" fill="none" stroke={`url(#${id})`} stroke-width="9" stroke-linecap="round" />
+    <path d="M35.5 16 26 31h6.5L29.5 44 39 28h-6.5z" fill="#C4F7CA" />
+  </svg>
+  {wordmark && <span class="logo-text"><span class="logo-main">URBAN<span class="logo-accent">TECHNO</span></span><span class="logo-sub">_store</span></span>}
+</span>
+<style>
+  .logo { display: inline-flex; align-items: center; gap: 10px; line-height: 1; color: var(--ink); }
+  .logo-mark { flex: none; border-radius: 25%; }
+  .logo-text { display: inline-flex; align-items: baseline; font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; letter-spacing: -0.01em; }
+  .logo-accent { color: var(--blue-deep); }
+  .logo-sub { font-weight: 600; font-size: 0.95rem; color: var(--ink-3); margin-left: 2px; letter-spacing: 0.02em; }
+  .logo-light { color: #fff; }
+  .logo-light .logo-accent { color: var(--cyan); }
+  .logo-light .logo-sub { color: rgba(255,255,255,.7); }
+</style>

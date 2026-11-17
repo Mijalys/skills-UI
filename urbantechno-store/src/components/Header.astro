@@ -2,14 +2,13 @@
 import { categories } from '../data/products';
 import { SITE, waLink } from '../site.config.mjs';
 import Icons from './Icons.astro';
+import Logo from './Logo.astro';
 const path = Astro.url.pathname;
 const active = (href: string) => path.startsWith(href) ? 'is-active' : '';
 ---
 <header class="site-header">
   <div class="container bar">
-    <a href="/" class="brand" aria-label={`${SITE.name}, inicio`}>
-      <span class="brand-main">URBAN<span class="brand-accent">TECHNO</span></span><span class="brand-sub">_store</span>
-    </a>
+    <a href="/" class="brand" aria-label={`${SITE.name}, inicio`}><Logo size={38} /></a>
     <nav class="nav" aria-label="Principal" id="nav">
       <ul>
         {categories.map((c) => <li><a class={active(`/tienda/${c.slug}/`)} href={`/tienda/${c.slug}/`}>{c.name}</a></li>)}
@@ -33,9 +32,7 @@ const active = (href: string) => path.startsWith(href) ? 'is-active' : '';
 <style>
   .site-header { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
   .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 68px; }
-  .brand { text-decoration: none; color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 1.7rem; letter-spacing: -0.01em; display: inline-flex; align-items: baseline; line-height: 1; }
-  .brand-accent { color: var(--blue-deep); }
-  .brand-sub { font-weight: 600; font-size: 1rem; color: var(--ink-3); margin-left: 2px; letter-spacing: 0.02em; }
+  .brand { text-decoration: none; display: inline-flex; }
   .nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; }
   .nav a { text-decoration: none; color: var(--ink); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 1.05rem; padding: 8px 12px; border-radius: 999px; }
   .nav a:hover, .nav a.is-active { background: var(--surface-2); color: var(--blue-ink); }

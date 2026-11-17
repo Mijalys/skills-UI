@@ -1,0 +1,47 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { categories, products } from '../../data/products';
+import { SITE } from '../../site.config.mjs';
+const jsonLd = {
+  '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Tienda', url: `${SITE.url}/tienda/`,
+  mainEntity: { '@type': 'ItemList', itemListElement: products.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE.url}/producto/${p.slug}/`, name: p.name })) },
+};
+---
+<Base title="Tienda · Todos los productos" description="Catálogo completo de celulares, laptops, consolas, zapatillas y lentes de sol 100 % originales. Filtra por categoría y condición: nuevo sellado o seminuevo certificado." jsonLd={jsonLd}>
+  <Breadcrumbs items={[{ name: 'Tienda' }]} />
+  <div class="container page-hero">
+    <h1>Toda la tienda</h1>
+    <p class="lead">{products.length} productos originales. Precios en soles con impuestos incluidos.</p>
+    <div class="flex chips">
+      <a class="btn btn-primary btn-sm" href="/tienda/">Todo</a>
+      {categories.map((c) => <a class="btn btn-outline btn-sm" href={`/tienda/${c.slug}/`}>{c.name}</a>)}
+    </div>
+    <div class="flex" data-filter-bar>
+      <span class="small muted">Condición:</span>
+      <button class="badge badge-soft is-on" type="button" data-filter="all">Todas</button>
+      <button class="badge badge-nuevo" type="button" data-filter="nuevo">Nuevo sellado</button>
+      <button class="badge badge-seminuevo" type="button" data-filter="seminuevo">Seminuevo certificado</button>
+    </div>
+  </div>
+  <div class="container section-tight" style="padding-top:0">
+    <div class="grid grid-4" data-products>{products.map((p, i) => <div data-cond={p.condition}><ProductCard p={p} eager={i < 4} /></div>)}</div>
+  </div>
+</Base>
+<style>
+  .chips { margin-bottom: 18px; }
+  [data-filter] { cursor: pointer; border: 2px solid transparent; }
+  [data-filter].is-on { border-color: var(--ink); }
+</style>
+<script>
+  const bar = document.querySelector('[data-filter-bar]');
+  bar?.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-filter]');
+    if (!b) return;
+    bar.querySelectorAll('[data-filter]').forEach((x) => x.classList.remove('is-on'));
+    b.classList.add('is-on');
+    const f = b.dataset.filter;
+    document.querySelectorAll<HTMLElement>('[data-products] [data-cond]').forEach((el) => { el.hidden = f !== 'all' && el.dataset.cond !== f; });
+  });
+</script>

@@ -1,0 +1,23 @@
+---
+import Help from '../layouts/Help.astro';
+import { SITE } from '../site.config.mjs';
+const couriers = [
+  { name: 'Olva Courier', url: 'https://www.olvacourier.com/' },
+  { name: 'Shalom', url: 'https://shalom.com.pe/' },
+  { name: 'Urbano', url: 'https://www.urbano.com.pe/' },
+];
+---
+<Help title="Seguimiento de pedido" description="Te enviamos el código de seguimiento por WhatsApp cuando despachamos. Con ese código rastreas tu paquete en la web del courier." summary={['Te enviamos el código de seguimiento por WhatsApp cuando despachamos.', 'Con ese código rastreas tu paquete en la web del courier.', 'Los plazos son referenciales y dependen de tu ciudad.']} waMessage="Hola, quiero saber el estado de mi pedido N.º ">
+  <h2>Estados de tu pedido</h2>
+  <ol class="steps">
+    <li><div><strong>Pago en verificación</strong>Recibimos tu pedido y estamos confirmando el abono.</div></li>
+    <li><div><strong>Confirmado</strong>Pago verificado. Preparamos tu paquete.</div></li>
+    <li><div><strong>Despachado</strong>Ya tienes tu código de seguimiento por WhatsApp.</div></li>
+    <li><div><strong>Entregado</strong>Revisa tu paquete y repórtanos cualquier problema en 48 horas.</div></li>
+  </ol>
+  <h2>Rastrea tu paquete</h2>
+  <p>Ingresa tu código en la web del courier que te indicamos al despachar:</p>
+  <div class="flex">{couriers.map((c) => <a class="btn btn-outline btn-sm" href={c.url} target="_blank" rel="noopener">{c.name}</a>)}</div>
+  <h2>¿No encuentras tu código?</h2>
+  <p>Escríbenos por WhatsApp con tu número de pedido y te lo reenviamos. Horario de atención: {SITE.hours}.</p>
+</Help>

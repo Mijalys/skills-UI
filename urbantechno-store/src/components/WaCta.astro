@@ -1,0 +1,24 @@
+---
+import { SITE, waLink } from '../site.config.mjs';
+import Icons from './Icons.astro';
+interface Props { title?: string; text?: string; message?: string }
+const { title = '¿Tienes dudas? Escríbenos', text = 'Respondemos por WhatsApp en horario de atención. Indícanos tu número de pedido si ya compraste.', message = 'Hola, tengo una consulta.' } = Astro.props;
+---
+<section class="wa-cta">
+  <div class="container inner">
+    <div>
+      <h2>{title}</h2>
+      <p class="lead mb-0">{text}</p>
+    </div>
+    <div class="flex">
+      <a class="btn btn-wa" href={waLink(message)} target="_blank" rel="noopener"><Icons name="wa" />WhatsApp {SITE.whatsappDisplay}</a>
+      <a class="btn btn-outline" href={`mailto:${SITE.email}`}>Correo</a>
+    </div>
+  </div>
+</section>
+<style>
+  .wa-cta { background: linear-gradient(120deg, var(--pale), var(--mint)); padding: clamp(36px, 6vw, 64px) 0; }
+  .inner { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+  .wa-cta h2 { margin-bottom: 8px; }
+  .wa-cta .btn :global(svg) { width: 22px; height: 22px; fill: currentColor; }
+</style>

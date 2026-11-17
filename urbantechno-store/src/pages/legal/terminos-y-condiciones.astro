@@ -1,0 +1,43 @@
+---
+import Help from '../../layouts/Help.astro';
+import { SITE } from '../../site.config.mjs';
+---
+<Help title="Términos y condiciones" description="Condiciones de compra en Urbantechno_store: qué vendemos, condición de los productos, precios, pagos, envíos y propiedad intelectual." section="Legal" updated summary={['Vendemos tecnología, zapatillas y lentes 100 % originales, nuevos sellados o seminuevos certificados.', 'Precios en soles con impuestos incluidos. El pedido se confirma al verificar el pago.', 'Envíos a todo el Perú. Es tu responsabilidad dar datos de entrega exactos.']}>
+  <p>Bienvenido a {SITE.name}. Al acceder, navegar y realizar compras en nuestro sitio web o canales oficiales de atención, aceptas los siguientes Términos y Condiciones, elaborados conforme al Código de Protección y Defensa del Consumidor (Ley N.° 29571).</p>
+  <h2>1. Qué vendemos</h2>
+  <ul>
+    <li>Productos tecnológicos (celulares, laptops, consolas), calzado (zapatillas) y accesorios (lentes de sol) 100 % originales.</li>
+    <li>En condición de nuevos sellados o seminuevos certificados.</li>
+    <li>Venta directa. No prestamos servicios de reparación técnica externa ni mantenimiento, ni recibimos artículos usados como parte de pago.</li>
+  </ul>
+  <h2>2. Condición de los productos</h2>
+  <ul>
+    <li><strong>Nuevo sellado:</strong> artículo sellado de fábrica, sin uso previo y con sus accesorios originales completos.</li>
+    <li><strong>Seminuevo certificado:</strong> equipo seleccionado y verificado técnica y estéticamente por nuestro equipo para garantizar su óptimo funcionamiento. El estado estético se detalla en cada ficha con un grado A o B.</li>
+  </ul>
+  <h2>3. Precios y medios de pago</h2>
+  <ul>
+    <li>Todos los precios están expresados en soles (S/) e incluyen los impuestos de ley, salvo que se indique expresamente el costo adicional de envío.</li>
+    <li>Los pagos se procesan mediante transferencia bancaria, billeteras digitales (Yape, Plin, Agora) y tarjetas de crédito o débito habilitadas.</li>
+    <li>La orden de compra se considera confirmada únicamente tras la verificación efectiva del abono.</li>
+  </ul>
+  <h2>4. Despacho y envíos</h2>
+  <ul>
+    <li>Realizamos envíos a todo el Perú a través de empresas de transporte y courier autorizadas.</li>
+    <li>Los plazos de entrega son referenciales y dependen de la ciudad o distrito de destino.</li>
+    <li>Una vez despachado el pedido, entregamos al cliente el número de guía o código de seguimiento.</li>
+    <li>Es responsabilidad del cliente proporcionar datos de entrega exactos y completos: nombre, DNI, teléfono y dirección.</li>
+  </ul>
+  <h2>5. Propiedad intelectual</h2>
+  <p>Las marcas, logotipos, nombres comerciales y especificaciones técnicas de los productos exhibidos pertenecen a sus respectivos fabricantes y se utilizan únicamente con fines descriptivos y de comercialización de artículos originales.</p>
+  <h2>6. Garantías, cambios y devoluciones</h2>
+  <p>Se rigen por nuestra <a href="/legal/politica-de-cambios-devoluciones-y-garantias/">Política de Cambios, Devoluciones y Garantías</a>, que forma parte de estos términos.</p>
+  <h2>7. Datos personales</h2>
+  <p>Tratamos tus datos conforme a nuestra <a href="/legal/politica-de-privacidad/">Política de Privacidad</a> y a la Ley N.° 29733 de Protección de Datos Personales.</p>
+  <h2>8. Contacto y reclamos</h2>
+  <ul>
+    <li>WhatsApp: <a href={`https://wa.me/${SITE.whatsapp}`}>{SITE.whatsappDisplay}</a></li>
+    <li>Correo: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+    <li><a href="/libro-de-reclamaciones/">Libro de Reclamaciones virtual</a>, conforme a la normativa de Indecopi.</li>
+  </ul>
+</Help>

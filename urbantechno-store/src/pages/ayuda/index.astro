@@ -1,0 +1,31 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import WaCta from '../../components/WaCta.astro';
+import Icons from '../../components/Icons.astro';
+const topics = [
+  { href: '/ayuda/envios/', name: 'Envíos', text: 'A todo el Perú, con código de seguimiento. Plazos por ciudad.', icon: 'truck' },
+  { href: '/ayuda/pagos/', name: 'Pagos', text: 'Yape, Plin, Agora, transferencia o tarjeta. Confirmamos al verificar.', icon: 'pay' },
+  { href: '/ayuda/garantia/', name: 'Garantía', text: '6 meses en celulares, laptops y consolas. Qué cubre y qué no.', icon: 'shield' },
+  { href: '/ayuda/cambios-y-devoluciones/', name: 'Cambios y devoluciones', text: '48 h para errores de despacho. 7 días para cambio de talla.', icon: 'box' },
+  { href: '/seguimiento/', name: 'Seguimiento de pedido', text: 'Estados del pedido y cómo rastrear tu paquete.', icon: 'search' },
+  { href: '/ayuda/preguntas-frecuentes/', name: 'Preguntas frecuentes', text: 'Las dudas más comunes, respondidas en una línea.', icon: 'check' },
+] as const;
+---
+<Base title="Centro de ayuda" description="Todo lo que necesitas saber para comprar en Urbantechno_store: envíos, pagos, garantía de 6 meses, cambios, devoluciones y seguimiento de pedido.">
+  <Breadcrumbs items={[{ name: 'Ayuda' }]} />
+  <div class="container page-hero"><h1>Centro de ayuda</h1><p class="lead">Respuestas cortas y claras. Si no encuentras la tuya, escríbenos por WhatsApp.</p></div>
+  <div class="container section-tight" style="padding-top:0">
+    <div class="grid grid-3">
+      {topics.map((t) => <a class="card card-pad topic" href={t.href}><Icons name={t.icon} /><h3>{t.name}</h3><p>{t.text}</p></a>)}
+    </div>
+  </div>
+  <WaCta />
+</Base>
+<style>
+  .topic { text-decoration: none; color: var(--ink); transition: transform .2s, box-shadow .2s; }
+  .topic:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .topic :global(svg) { width: 32px; height: 32px; color: var(--blue-deep); margin-bottom: 12px; }
+  .topic h3 { margin-bottom: 6px; }
+  .topic p { margin: 0; color: var(--ink-2); }
+</style>

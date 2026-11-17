@@ -1,0 +1,154 @@
+---
+import Base from '../layouts/Base.astro';
+import ProductCard from '../components/ProductCard.astro';
+import WaCta from '../components/WaCta.astro';
+import Icons from '../components/Icons.astro';
+import { categories, products, img } from '../data/products';
+import { faqs, faqJsonLd } from '../data/faq';
+import { SITE, waLink } from '../site.config.mjs';
+const featured = products.filter((p) => p.featured);
+const homeFaqs = faqs.slice(0, 5);
+---
+<Base title={`${SITE.name} · Celulares, laptops, consolas y zapatillas originales en Perú`} description={SITE.description} jsonLd={faqJsonLd(homeFaqs)}>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow">Tienda online · Envíos a todo el Perú</span>
+        <h1>Tecnología original.<br /><span class="hl">Garantía real.</span></h1>
+        <p class="lead">Celulares, laptops, consolas, zapatillas y lentes de sol 100 % originales. Nuevos sellados o seminuevos certificados, con garantía escrita de 6 meses.</p>
+        <div class="flex">
+          <a class="btn btn-primary" href="/tienda/">Ver la tienda <Icons name="arrow" /></a>
+          <a class="btn btn-light" href="/tienda/celulares/">Celulares</a>
+          <a class="btn btn-light" href="/tienda/zapatillas/">Zapatillas</a>
+        </div>
+        <ul class="hero-points">
+          <li>Pagas con Yape, Plin o tarjeta</li>
+          <li>Código de seguimiento al despachar</li>
+          <li>Atención directa por WhatsApp</li>
+        </ul>
+      </div>
+      <div class="hero-media">
+        <img src={img('1556656793-08538906a9f8', 1000, 1100)} alt="Varios iPhone sobre una mesa celeste vistos desde arriba" width="1000" height="1100" fetchpriority="high" decoding="async" />
+        <div class="hero-chip chip-a"><strong>6 meses</strong><span>de garantía escrita</span></div>
+        <div class="hero-chip chip-b"><strong>100 %</strong><span>originales, verificados</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container">
+      <div class="section-head"><h2>Compra por categoría</h2><a href="/tienda/">Ver todo el catálogo</a></div>
+      <div class="cats">
+        {categories.map((c, i) => (
+          <a href={`/tienda/${c.slug}/`} class="cat">
+            <img src={img(c.image, 600, 600)} alt="" width="600" height="600" loading={i < 2 ? 'eager' : 'lazy'} decoding="async" />
+            <div class="cat-body"><h3>{c.name}</h3><p>{c.short}</p></div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><div><span class="eyebrow">Selección</span><h2>Lo más pedido</h2></div><a href="/tienda/">Ver todos los productos</a></div>
+      <div class="grid grid-4">{featured.map((p) => <ProductCard p={p} />)}</div>
+    </div>
+  </section>
+
+  <section class="section cond">
+    <div class="container cond-grid">
+      <div>
+        <span class="eyebrow">Dos condiciones, una sola promesa</span>
+        <h2>Nuevo sellado o seminuevo certificado</h2>
+        <p class="lead">Cada producto dice claramente en qué estado está. No hay sorpresas al abrir el paquete.</p>
+        <div class="cond-cards">
+          <div class="cond-card">
+            <span class="badge badge-nuevo">Nuevo sellado</span>
+            <p>Caja cerrada de fábrica, sin uso y con todos los accesorios originales.</p>
+          </div>
+          <div class="cond-card">
+            <span class="badge badge-seminuevo">Seminuevo certificado</span>
+            <p>Revisado técnica y estéticamente por nuestro equipo. Batería, pantalla, puertos y cuentas verificados. Estado detallado en cada ficha.</p>
+            <ul class="small">
+              <li><strong>Grado A</strong>: sin marcas visibles a 30 cm.</li>
+              <li><strong>Grado B</strong>: micro marcas de uso en bordes o carcasa, pantalla impecable.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <figure class="cond-media">
+        <img src={img('1542751371-adc38448a05e', 900, 1100)} alt="Persona jugando frente a varios monitores en una habitación oscura" width="900" height="1100" loading="lazy" decoding="async" />
+      </figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <span class="eyebrow">Así de simple</span>
+      <h2>Cómo comprar</h2>
+      <ol class="steps how">
+        <li><div><strong>Elige y agrega al carrito</strong>Revisa la ficha: condición, estado estético y qué incluye.</div></li>
+        <li><div><strong>Envíanos el pedido por WhatsApp</strong>Confirmamos stock y el costo de envío a tu ciudad.</div></li>
+        <li><div><strong>Paga como prefieras</strong>Transferencia, Yape, Plin, Agora o tarjeta. Confirmamos al verificar el abono.</div></li>
+        <li><div><strong>Recibe y revisa en 48 h</strong>Te enviamos el código de seguimiento. Si algo no está bien, lo resolvemos.</div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="container">
+      <div class="section-head"><h2>Preguntas frecuentes</h2><a href="/ayuda/preguntas-frecuentes/">Ver todas</a></div>
+      <div class="faq-list">{homeFaqs.map((f) => <details class="faq"><summary>{f.q}</summary><p>{f.a}</p></details>)}</div>
+    </div>
+  </section>
+
+  <WaCta title="¿Buscas un modelo que no ves?" text="Cuéntanos qué necesitas y te avisamos cuando lo tengamos o te proponemos una alternativa." message="Hola, busco un producto que no veo en la web:" />
+</Base>
+
+<style>
+  .hero { background: linear-gradient(160deg, var(--cyan) 0%, #c2f0ff 35%, var(--pale) 100%); overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 40px; align-items: center; padding: clamp(40px, 7vw, 90px) 0; }
+  .hero h1 { margin-bottom: 20px; }
+  .hl { color: var(--blue-deep); }
+  .hero-points { list-style: none; margin: 28px 0 0; padding: 0; display: flex; gap: 10px 24px; flex-wrap: wrap; font-weight: 500; color: var(--ink-2); }
+  .hero-points li::before { content: '✓'; color: var(--blue-deep); font-weight: 800; margin-right: 8px; }
+  .hero-media { position: relative; }
+  .hero-media img { border-radius: 28px; aspect-ratio: 10/11; object-fit: cover; box-shadow: 0 30px 60px rgba(11,27,43,.18); }
+  .hero-chip { position: absolute; background: #fff; border-radius: 16px; padding: 14px 18px; box-shadow: var(--shadow); display: grid; line-height: 1.05; }
+  .hero-chip strong { font-family: var(--font-display); font-weight: 800; font-size: 1.8rem; text-transform: uppercase; }
+  .hero-chip span { font-size: 0.9rem; color: var(--ink-2); }
+  .chip-a { left: -20px; bottom: 36px; }
+  .chip-b { right: -16px; top: 32px; }
+  .cats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; }
+  .cat { position: relative; display: block; border-radius: var(--radius); overflow: hidden; aspect-ratio: 4/5; text-decoration: none; color: #fff; }
+  .cat img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+  .cat:hover img { transform: scale(1.05); }
+  .cat-body { position: absolute; inset: auto 0 0 0; padding: 18px; background: linear-gradient(to top, rgba(11,27,43,.85), transparent); }
+  .cat h3 { margin: 0; color: #fff; font-size: 1.5rem; }
+  .cat p { margin: 2px 0 0; font-size: 0.9rem; color: var(--cyan); }
+  .cond { background: var(--surface); }
+  .cond-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+  .cond-cards { display: grid; gap: 14px; margin-top: 24px; }
+  .cond-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 20px 22px; }
+  .cond-card p { margin: 10px 0 0; }
+  .cond-card ul { margin: 10px 0 0; padding-left: 18px; color: var(--ink-2); }
+  .cond-media { margin: 0; }
+  .cond-media img { border-radius: var(--radius); aspect-ratio: 9/11; object-fit: cover; }
+  .how { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .how li { grid-template-columns: 1fr; gap: 12px; }
+  .faq-list { max-width: 820px; }
+  @media (max-width: 960px) {
+    .hero-grid, .cond-grid { grid-template-columns: 1fr; }
+    .hero-media { margin-top: 8px; }
+    .chip-a { left: 12px; bottom: 16px; } .chip-b { right: 12px; top: 12px; }
+    .cats { grid-template-columns: repeat(3, 1fr); }
+    .how { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .cats { grid-template-columns: 1fr 1fr; }
+    .cat { aspect-ratio: 1; }
+    .how { grid-template-columns: 1fr; }
+    .hero-media img { aspect-ratio: 4/3; }
+  }
+</style>

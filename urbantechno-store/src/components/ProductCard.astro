@@ -1,0 +1,36 @@
+---
+import { img, soles, type Product } from '../data/products';
+interface Props { p: Product; eager?: boolean }
+const { p, eager = false } = Astro.props;
+const off = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
+---
+<article class="pc">
+  <a href={`/producto/${p.slug}/`} class="pc-img">
+    <img src={img(p.image, 640, 640)} srcset={`${img(p.image, 400, 400)} 400w, ${img(p.image, 640, 640)} 640w, ${img(p.image, 900, 900)} 900w`} sizes="(max-width: 600px) 50vw, 300px" alt={p.alt} width="640" height="640" loading={eager ? 'eager' : 'lazy'} decoding="async" />
+    <div class="pc-badges">
+      <span class={`badge badge-${p.condition}`}>{p.condition === 'nuevo' ? 'Nuevo sellado' : `Seminuevo · Grado ${p.grade}`}</span>
+      {off > 0 && <span class="badge badge-oferta">-{off}%</span>}
+    </div>
+  </a>
+  <div class="pc-body">
+    <p class="pc-brand">{p.brand}</p>
+    <h3 class="pc-name"><a href={`/producto/${p.slug}/`}>{p.name}</a></h3>
+    <p class="pc-short">{p.short}</p>
+    <p class="pc-price"><span>{soles(p.price)}</span>{p.oldPrice && <s>{soles(p.oldPrice)}</s>}</p>
+  </div>
+</article>
+<style>
+  .pc { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform .2s ease, box-shadow .2s ease; }
+  .pc:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+  .pc-img { position: relative; display: block; aspect-ratio: 1; background: var(--surface); }
+  .pc-img img { width: 100%; height: 100%; object-fit: cover; }
+  .pc-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .pc-body { padding: 16px 18px 20px; display: grid; gap: 4px; }
+  .pc-brand { margin: 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); font-weight: 600; }
+  .pc-name { margin: 0; font-size: 1.35rem; line-height: 1.05; }
+  .pc-name a { color: var(--ink); text-decoration: none; }
+  .pc-name a:hover { color: var(--blue-deep); }
+  .pc-short { margin: 0; color: var(--ink-2); font-size: 0.93rem; }
+  .pc-price { margin: 8px 0 0; display: flex; gap: 10px; align-items: baseline; font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; }
+  .pc-price s { font-weight: 600; font-size: 1rem; color: var(--ink-3); }
+</style>

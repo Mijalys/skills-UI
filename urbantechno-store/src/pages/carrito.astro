@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Icons from '../components/Icons.astro';
+import { SITE } from '../site.config.mjs';
+---
+<Base title="Carrito y pedido" description="Revisa tu carrito y envía tu pedido por WhatsApp. Pagas por transferencia, Yape, Plin, Agora o tarjeta." noindex>
+  <Breadcrumbs items={[{ name: 'Carrito' }]} />
+  <div class="container page-hero"><h1>Tu pedido</h1><p class="lead">Revisa los productos, completa tus datos y envíanos el pedido por WhatsApp. Confirmamos stock y envío antes de que pagues.</p></div>
+  <div class="container cart-grid section-tight" style="padding-top:0">
+    <section>
+      <h2 class="h-sm">Productos</h2>
+      <div class="cart-items" data-cart-items></div>
+      <p class="empty" data-cart-empty>Tu carrito está vacío. <a href="/tienda/">Ir a la tienda</a>.</p>
+    </section>
+    <aside class="card card-pad checkout" data-checkout hidden>
+      <h2 class="h-sm">Datos de entrega</h2>
+      <p class="small muted">El courier los necesita para entregar. Revisa que estén completos.</p>
+      <form data-form>
+        <div class="field"><label for="n">Nombre completo</label><input class="input" id="n" name="nombre" required autocomplete="name" /></div>
+        <div class="form-row">
+          <div class="field"><label for="d">DNI</label><input class="input" id="d" name="dni" required inputmode="numeric" pattern="[0-9]{8}" maxlength="8" /><span class="hint">8 dígitos</span></div>
+          <div class="field"><label for="t">Teléfono</label><input class="input" id="t" name="telefono" required inputmode="tel" autocomplete="tel" /></div>
+        </div>
+        <div class="field"><label for="c">Ciudad o distrito</label><input class="input" id="c" name="ciudad" required placeholder="Ej. Miraflores, Lima" /></div>
+        <div class="field"><label for="a">Dirección exacta</label><input class="input" id="a" name="direccion" required placeholder="Calle, número, referencia" autocomplete="street-address" /></div>
+        <div class="field"><label for="p">Medio de pago</label>
+          <select class="input" id="p" name="pago" required>
+            <option value="Yape">Yape</option><option value="Plin">Plin</option><option value="Agora">Agora</option><option value="Transferencia bancaria">Transferencia bancaria</option><option value="Tarjeta de crédito o débito">Tarjeta de crédito o débito</option>
+          </select>
+        </div>
+        <div class="totals"><span>Subtotal</span><strong data-total>S/ 0</strong></div>
+        <p class="small muted">El envío se cotiza según tu ciudad y se suma al confirmar. Tu pedido queda confirmado cuando verificamos el pago.</p>
+        <label class="accept"><input type="checkbox" required /> Acepto los <a href="/legal/terminos-y-condiciones/" target="_blank">Términos y condiciones</a> y la <a href="/legal/politica-de-cambios-devoluciones-y-garantias/" target="_blank">Política de cambios y garantías</a>.</label>
+        <button class="btn btn-wa btn-block" type="submit"><Icons name="wa" />Enviar pedido por WhatsApp</button>
+      </form>
+    </aside>
+  </div>
+</Base>
+<style>
+  .cart-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 32px; align-items: start; }
+  .h-sm { font-size: 1.5rem; }
+  .cart-items { display: grid; gap: 12px; }
+  .ci { display: grid; grid-template-columns: 72px 1fr auto; gap: 14px; align-items: center; border: 1px solid var(--line); border-radius: var(--radius-sm); padding: 12px; }
+  .ci img { width: 72px; height: 72px; border-radius: 8px; object-fit: cover; }
+  .ci-name { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; font-size: 1.1rem; line-height: 1.05; }
+  .ci-meta { font-size: 0.9rem; color: var(--ink-3); }
+  .ci-right { text-align: right; display: grid; gap: 6px; justify-items: end; }
+  .ci-price { font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; }
+  .qty { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+  .qty button { width: 32px; height: 30px; border: 0; background: #fff; cursor: pointer; font-weight: 700; }
+  .qty span { width: 32px; display: grid; place-items: center; font-weight: 600; }
+  .rm { background: none; border: 0; color: var(--ink-3); cursor: pointer; font-size: 0.85rem; text-decoration: underline; }
+  .totals { display: flex; justify-content: space-between; font-size: 1.3rem; margin: 8px 0; font-family: var(--font-display); text-transform: uppercase; }
+  .accept { display: flex; gap: 8px; align-items: start; font-size: 0.92rem; margin: 12px 0 16px; }
+  .checkout :global(svg) { width: 20px; height: 20px; fill: currentColor; }
+  @media (max-width: 900px) { .cart-grid { grid-template-columns: 1fr; } }
+</style>
+<script>
+  import { readCart, writeCart, soles } from '../scripts/cart';
+  import { SITE } from '../site.config.mjs';
+  const wrap = document.querySelector<HTMLElement>('[data-cart-items]')!;
+  const empty = document.querySelector<HTMLElement>('[data-cart-empty]')!;
+  const checkout = document.querySelector<HTMLElement>('[data-checkout]')!;
+  const totalEl = document.querySelector<HTMLElement>('[data-total]')!;
+
+  const render = () => {
+    const items = readCart();
+    wrap.innerHTML = items.map((i, idx) => `
+      <div class="ci">
+        <img src="${i.image}" alt="" />
+        <div><div class="ci-name">${i.name}</div><div class="ci-meta">${i.size ? `Talla ${i.size} · ` : ''}${soles(i.price)} c/u</div></div>
+        <div class="ci-right">
+          <div class="ci-price">${soles(i.price * i.qty)}</div>
+          <div class="qty"><button type="button" data-dec="${idx}" aria-label="Quitar uno">−</button><span>${i.qty}</span><button type="button" data-inc="${idx}" aria-label="Agregar uno">+</button></div>
+          <button type="button" class="rm" data-rm="${idx}">Quitar</button>
+        </div>
+      </div>`).join('');
+    const total = items.reduce((a, i) => a + i.price * i.qty, 0);
+    totalEl.textContent = soles(total);
+    empty.hidden = items.length > 0;
+    checkout.hidden = items.length === 0;
+  };
+  wrap.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement; const items = readCart();
+    if (t.dataset.inc) items[+t.dataset.inc].qty++;
+    if (t.dataset.dec) { const it = items[+t.dataset.dec]; it.qty = Math.max(1, it.qty - 1); }
+    if (t.dataset.rm) items.splice(+t.dataset.rm, 1);
+    writeCart(items); render();
+  });
+  document.querySelector<HTMLFormElement>('[data-form]')?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = new FormData(e.target as HTMLFormElement);
+    const items = readCart();
+    const lines = items.map((i) => `• ${i.name}${i.size ? ` (talla ${i.size})` : ''} × ${i.qty} = ${soles(i.price * i.qty)}`).join('\n');
+    const total = items.reduce((a, i) => a + i.price * i.qty, 0);
+    const msg = `Hola, quiero hacer este pedido:\n\n${lines}\n\nSubtotal: ${soles(total)} (envío por cotizar)\n\nDatos de entrega:\nNombre: ${f.get('nombre')}\nDNI: ${f.get('dni')}\nTeléfono: ${f.get('telefono')}\nCiudad: ${f.get('ciudad')}\nDirección: ${f.get('direccion')}\nPago: ${f.get('pago')}`;
+    window.open(`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank', 'noopener');
+  });
+  render();
+</script>

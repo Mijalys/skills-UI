@@ -1,0 +1,115 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import Icons from '../../components/Icons.astro';
+import { products, categoryOf, isTech, img, soles, byCategory } from '../../data/products';
+import { SITE, waLink } from '../../site.config.mjs';
+
+export function getStaticPaths() {
+  return products.map((p) => ({ params: { slug: p.slug }, props: { p } }));
+}
+const { p } = Astro.props;
+const c = categoryOf(p.category);
+const tech = isTech(p.category);
+const related = byCategory(p.category).filter((x) => x.slug !== p.slug).slice(0, 4);
+const condText = p.condition === 'nuevo' ? 'Nuevo sellado' : `Seminuevo certificado · Grado ${p.grade}`;
+const gradeText = p.grade === 'A' ? 'Sin marcas visibles a 30 cm. Funciona como nuevo.' : p.grade === 'B' ? 'Micro marcas de uso en bordes o carcasa. Pantalla impecable y funcionamiento al 100 %.' : '';
+const title = `${p.name} ${p.condition === 'nuevo' ? 'nuevo sellado' : 'seminuevo certificado'} · ${soles(p.price)}`;
+const description = `${p.name} ${p.brand} ${condText.toLowerCase()} por ${soles(p.price)}. ${p.short} ${tech ? 'Garantía escrita de 6 meses.' : 'Autenticidad 100 % garantizada.'} Envíos a todo el Perú.`;
+const waMsg = `Hola, quiero comprar: ${p.name} (${condText}) a ${soles(p.price)}. ${p.sizes && p.sizes.length > 1 ? 'Talla: ___. ' : ''}¿Está disponible?`;
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'Product', name: p.name, brand: { '@type': 'Brand', name: p.brand }, image: img(p.image, 1200, 1200), description, sku: p.slug, category: c.name,
+    offers: { '@type': 'Offer', url: `${SITE.url}/producto/${p.slug}/`, priceCurrency: 'PEN', price: p.price, availability: p.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      itemCondition: p.condition === 'nuevo' ? 'https://schema.org/NewCondition' : 'https://schema.org/RefurbishedCondition', seller: { '@id': `${SITE.url}/#org` },
+      shippingDetails: { '@type': 'OfferShippingDetails', shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'PE' } },
+      ...(tech ? { warranty: { '@type': 'WarrantyPromise', durationOfWarranty: { '@type': 'QuantitativeValue', value: 6, unitCode: 'MON' } } } : {}) } },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE.url }, { '@type': 'ListItem', position: 2, name: c.name, item: `${SITE.url}/tienda/${c.slug}/` }, { '@type': 'ListItem', position: 3, name: p.name, item: `${SITE.url}/producto/${p.slug}/` } ] },
+];
+---
+<Base title={title} description={description} image={img(p.image, 1200, 630)} type="product" jsonLd={jsonLd}>
+  <Breadcrumbs items={[{ name: c.name, href: `/tienda/${c.slug}/` }, { name: p.name }]} />
+  <article class="container pd">
+    <div class="pd-media">
+      <img src={img(p.image, 1000, 1000)} srcset={`${img(p.image, 600, 600)} 600w, ${img(p.image, 1000, 1000)} 1000w`} sizes="(max-width: 900px) 100vw, 560px" alt={p.alt} width="1000" height="1000" fetchpriority="high" decoding="async" />
+      <p class="small muted">Foto referencial del modelo. En seminuevos enviamos fotos reales del equipo por WhatsApp antes de confirmar.</p>
+    </div>
+    <div class="pd-info">
+      <p class="pd-brand">{p.brand} · {c.name}</p>
+      <h1>{p.name}</h1>
+      <div class="flex">
+        <span class={`badge badge-${p.condition}`}>{condText}</span>
+        {p.stock <= 2 && <span class="badge badge-oferta">Quedan {p.stock}</span>}
+      </div>
+      <p class="pd-price"><span>{soles(p.price)}</span>{p.oldPrice && <s>{soles(p.oldPrice)}</s>}</p>
+      <p class="small muted">Impuestos incluidos. Envío se cotiza según tu ciudad.</p>
+      <p class="lead">{p.short}</p>
+      {gradeText && <div class="grade"><strong>Estado estético grado {p.grade}:</strong> {gradeText}</div>}
+
+      {p.sizes && p.sizes.length > 1 && (
+        <div class="field">
+          <label for="size">Talla (US)</label>
+          <select id="size" class="input" data-size required>
+            <option value="">Elige tu talla</option>
+            {p.sizes.map((s) => <option value={s}>{s}</option>)}
+          </select>
+          <span class="hint">¿Dudas con la talla? Escríbenos y te ayudamos antes de comprar.</span>
+        </div>
+      )}
+
+      <div class="pd-ctas">
+        <button class="btn btn-primary btn-block" type="button" data-add data-slug={p.slug} data-name={p.name} data-price={p.price} data-image={img(p.image, 200, 200)}><Icons name="cart" />Agregar al carrito</button>
+        <a class="btn btn-wa btn-block" href={waLink(waMsg)} target="_blank" rel="noopener"><Icons name="wa" />Comprar por WhatsApp</a>
+      </div>
+      <p class="toast" data-toast hidden>Agregado al carrito. <a href="/carrito/">Ver carrito</a></p>
+
+      <ul class="pd-trust">
+        <li><Icons name="shield" />{tech ? 'Garantía escrita de 6 meses' : 'Autenticidad 100 % garantizada'}</li>
+        <li><Icons name="truck" />Envío a todo el Perú con código de seguimiento</li>
+        <li><Icons name="pay" />Yape, Plin, Agora, transferencia o tarjeta</li>
+        <li><Icons name="box" />Revisa tu paquete: 48 h para reportar errores</li>
+      </ul>
+
+      <details class="faq" open><summary>Qué incluye</summary><ul class="check">{p.includes.map((i) => <li>{i}</li>)}</ul><br /></details>
+      <details class="faq"><summary>Especificaciones</summary><ul class="specs">{p.specs.map((s) => <li>{s}</li>)}</ul></details>
+      <details class="faq"><summary>{tech ? 'Garantía y qué no cubre' : 'Garantía de autenticidad'}</summary>
+        {tech ? (<>
+          <p>Seis meses desde la recepción por fallas técnicas internas o defectos de fábrica. Evaluación en 3 a 7 días hábiles; reparación, reemplazo o devolución del dinero.</p>
+          <p>No cubre: golpes o pantalla rota, líquidos, apertura por terceros, cargadores genéricos, desgaste normal de batería, bloqueos de cuentas. <a href="/ayuda/garantia/">Ver garantía completa</a>.</p>
+        </>) : (<p>Garantizamos que el producto es 100 % original y llega sin defectos de fabricación. <a href="/ayuda/cambios-y-devoluciones/">Ver cambios y devoluciones</a>.</p>)}
+      </details>
+      <details class="faq"><summary>Envíos y cambios</summary>
+        <p>Enviamos a todo el Perú. El plazo depende de tu ciudad y te damos el código de seguimiento al despachar.</p>
+        {p.category === 'zapatillas' ? <p>Cambio de talla o modelo en 7 días calendario: sin uso, con caja y etiquetas intactas, sujeto a stock. El envío del cambio lo pagas tú.</p> : <p>No hay devolución por cambio de opinión una vez abierto el sello o usado el artículo. Si llega distinto o con falla evidente, repórtalo en 48 h y asumimos los envíos.</p>}
+      </details>
+    </div>
+  </article>
+
+  {related.length > 0 && (
+    <section class="container section-tight">
+      <div class="section-head"><h2>También en {c.name.toLowerCase()}</h2><a href={`/tienda/${c.slug}/`}>Ver todos</a></div>
+      <div class="grid grid-4">{related.map((r) => <ProductCard p={r} />)}</div>
+    </section>
+  )}
+</Base>
+<style>
+  .pd { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding: 16px 0 48px; align-items: start; }
+  .pd-media { position: sticky; top: 90px; }
+  .pd-media img { border-radius: var(--radius); aspect-ratio: 1; object-fit: cover; background: var(--surface); margin-bottom: 10px; }
+  .pd-brand { margin: 0 0 6px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; font-size: 0.85rem; color: var(--ink-3); }
+  .pd h1 { font-size: clamp(2.2rem, 5vw, 3.4rem); margin-bottom: 14px; }
+  .pd-price { margin: 18px 0 2px; display: flex; gap: 12px; align-items: baseline; font-family: var(--font-display); font-weight: 800; font-size: 2.6rem; line-height: 1; }
+  .pd-price s { font-size: 1.3rem; font-weight: 600; color: var(--ink-3); }
+  .grade { background: var(--surface-2); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 18px; }
+  .pd-ctas { display: grid; gap: 10px; margin: 8px 0 12px; }
+  .pd-ctas :global(svg) { width: 20px; height: 20px; }
+  .btn-wa :global(svg) { fill: currentColor; }
+  .toast { background: var(--mint); padding: 10px 14px; border-radius: var(--radius-sm); font-weight: 500; }
+  .pd-trust { list-style: none; margin: 16px 0 24px; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); display: grid; gap: 10px; }
+  .pd-trust li { display: flex; gap: 10px; align-items: center; font-weight: 500; }
+  .pd-trust :global(svg) { width: 20px; height: 20px; color: var(--blue-deep); flex: none; }
+  .specs { margin: 0 0 18px; padding-left: 20px; color: var(--ink-2); }
+  .is-error { border-color: var(--danger) !important; }
+  @media (max-width: 900px) { .pd { grid-template-columns: 1fr; gap: 24px; } .pd-media { position: static; } }
+</style>

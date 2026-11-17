@@ -1,0 +1,71 @@
+---
+import { categories } from '../data/products';
+import { SITE, waLink } from '../site.config.mjs';
+import Icons from './Icons.astro';
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container">
+    <div class="cols">
+      <div class="col brand-col">
+        <p class="brand">URBAN<span>TECHNO</span>_store</p>
+        <p class="muted">{SITE.tagline}</p>
+        <p class="small muted">{SITE.city} · {SITE.hours}</p>
+      </div>
+      <div class="col">
+        <h4>Tienda</h4>
+        <ul>{categories.map((c) => <li><a href={`/tienda/${c.slug}/`}>{c.name}</a></li>)}<li><a href="/tienda/">Ver todo</a></li></ul>
+      </div>
+      <div class="col">
+        <h4>Ayuda</h4>
+        <ul>
+          <li><a href="/ayuda/envios/">Envíos</a></li>
+          <li><a href="/ayuda/pagos/">Pagos</a></li>
+          <li><a href="/ayuda/garantia/">Garantía</a></li>
+          <li><a href="/ayuda/cambios-y-devoluciones/">Cambios y devoluciones</a></li>
+          <li><a href="/seguimiento/">Seguimiento de pedido</a></li>
+          <li><a href="/ayuda/preguntas-frecuentes/">Preguntas frecuentes</a></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/legal/terminos-y-condiciones/">Términos y condiciones</a></li>
+          <li><a href="/legal/politica-de-cambios-devoluciones-y-garantias/">Cambios, devoluciones y garantías</a></li>
+          <li><a href="/legal/politica-de-privacidad/">Política de privacidad</a></li>
+          <li><a class="libro" href="/libro-de-reclamaciones/"><span class="libro-ico" aria-hidden="true">📖</span> Libro de Reclamaciones</a></li>
+        </ul>
+      </div>
+      <div class="col">
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href={waLink('Hola, quiero hacer una consulta.')} target="_blank" rel="noopener">WhatsApp {SITE.whatsappDisplay}</a></li>
+          <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+          <li><a href={SITE.instagram} target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href={SITE.tiktok} target="_blank" rel="noopener">TikTok</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="bottom">
+      <p class="small muted">© {year} {SITE.name}. Las marcas y logotipos pertenecen a sus fabricantes y se usan solo para describir productos originales.</p>
+      <p class="small muted">Precios en soles (S/) con impuestos incluidos. Envío se cotiza aparte.</p>
+    </div>
+  </div>
+</footer>
+<a class="wa-float" href={waLink('Hola, quiero hacer una consulta.')} target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><Icons name="wa" /></a>
+
+<style>
+  .footer { background: var(--surface); border-top: 1px solid var(--line); padding: 56px 0 100px; margin-top: 40px; }
+  .cols { display: grid; grid-template-columns: 1.6fr repeat(4, 1fr); gap: 32px; }
+  .brand { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; margin: 0 0 8px; }
+  .brand span { color: var(--blue-deep); }
+  h4 { font-size: 1rem; letter-spacing: 0.1em; margin-bottom: 12px; }
+  ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  ul a { color: var(--ink-2); text-decoration: none; }
+  ul a:hover { color: var(--blue-deep); text-decoration: underline; }
+  .libro { font-weight: 600; color: var(--ink); display: inline-flex; gap: 6px; align-items: center; }
+  .bottom { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .bottom p { margin: 0; }
+  @media (max-width: 960px) { .cols { grid-template-columns: 1fr 1fr; } .brand-col { grid-column: 1 / -1; } }
+  @media (max-width: 520px) { .cols { grid-template-columns: 1fr; } }
+</style>

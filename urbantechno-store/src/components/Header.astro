@@ -1,0 +1,75 @@
+---
+import { categories } from '../data/products';
+import { SITE, waLink } from '../site.config.mjs';
+import Icons from './Icons.astro';
+const path = Astro.url.pathname;
+const active = (href: string) => path.startsWith(href) ? 'is-active' : '';
+---
+<header class="site-header">
+  <div class="container bar">
+    <a href="/" class="brand" aria-label={`${SITE.name}, inicio`}>
+      <span class="brand-main">URBAN<span class="brand-accent">TECHNO</span></span><span class="brand-sub">_store</span>
+    </a>
+    <nav class="nav" aria-label="Principal" id="nav">
+      <ul>
+        {categories.map((c) => <li><a class={active(`/tienda/${c.slug}/`)} href={`/tienda/${c.slug}/`}>{c.name}</a></li>)}
+        <li><a class={active('/ayuda/')} href="/ayuda/">Ayuda</a></li>
+      </ul>
+      <div class="nav-mobile-extra">
+        <a href="/seguimiento/">Seguimiento de pedido</a>
+        <a href="/nosotros/">Nosotros</a>
+        <a href="/contacto/">Contacto</a>
+        <a class="btn btn-wa btn-sm" href={waLink('Hola, quiero hacer una consulta.')} target="_blank" rel="noopener"><Icons name="wa" />WhatsApp</a>
+      </div>
+    </nav>
+    <div class="actions">
+      <a class="wa-head" href={waLink('Hola, quiero hacer una consulta.')} target="_blank" rel="noopener"><Icons name="wa" /><span>WhatsApp</span></a>
+      <a class="cart-link" href="/carrito/" aria-label="Carrito"><Icons name="cart" /><span class="cart-count" data-cart-count hidden>0</span></a>
+      <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" data-menu><Icons name="menu" class="i-open" /><Icons name="close" class="i-close" /><span class="sr-only">Menú</span></button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header { position: sticky; top: 0; z-index: 40; background: rgba(255,255,255,.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 68px; }
+  .brand { text-decoration: none; color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 1.7rem; letter-spacing: -0.01em; display: inline-flex; align-items: baseline; line-height: 1; }
+  .brand-accent { color: var(--blue-deep); }
+  .brand-sub { font-weight: 600; font-size: 1rem; color: var(--ink-3); margin-left: 2px; letter-spacing: 0.02em; }
+  .nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; }
+  .nav a { text-decoration: none; color: var(--ink); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 1.05rem; padding: 8px 12px; border-radius: 999px; }
+  .nav a:hover, .nav a.is-active { background: var(--surface-2); color: var(--blue-ink); }
+  .nav-mobile-extra { display: none; }
+  .actions { display: flex; align-items: center; gap: 8px; }
+  .wa-head { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--ink); font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 8px 12px; border-radius: 999px; background: var(--mint); }
+  .wa-head :global(svg) { width: 20px; height: 20px; fill: #128c4a; }
+  .cart-link { position: relative; display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; color: var(--ink); background: var(--surface-2); }
+  .cart-link :global(svg) { width: 22px; height: 22px; }
+  .cart-count { position: absolute; top: -4px; right: -4px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--blue); color: var(--ink); font-family: var(--font-display); font-weight: 800; font-size: 0.8rem; display: grid; place-items: center; }
+  .menu-btn { display: none; width: 42px; height: 42px; border-radius: 50%; border: 0; background: var(--surface-2); color: var(--ink); place-items: center; cursor: pointer; }
+  .menu-btn :global(svg) { width: 22px; height: 22px; }
+  .menu-btn :global(.i-close) { display: none; }
+  .menu-btn[aria-expanded="true"] :global(.i-open) { display: none; }
+  .menu-btn[aria-expanded="true"] :global(.i-close) { display: block; }
+  @media (max-width: 960px) {
+    .nav { display: none; position: absolute; left: 0; right: 0; top: 68px; background: #fff; border-bottom: 1px solid var(--line); padding: 12px var(--gutter) 20px; box-shadow: var(--shadow); }
+    .nav.open { display: block; }
+    .nav ul { flex-direction: column; gap: 0; }
+    .nav a { display: block; font-size: 1.3rem; padding: 12px; border-radius: var(--radius-sm); }
+    .nav-mobile-extra { display: grid; gap: 4px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); }
+    .nav-mobile-extra a { font-size: 1.05rem; }
+    .nav-mobile-extra .btn { margin-top: 10px; justify-self: start; display: inline-flex; font-size: 1rem; }
+    .wa-head span { display: none; }
+    .wa-head { padding: 0; width: 42px; height: 42px; justify-content: center; }
+    .menu-btn { display: grid; }
+  }
+</style>
+
+<script>
+  const btn = document.querySelector('[data-menu]') as HTMLButtonElement | null;
+  const nav = document.getElementById('nav');
+  btn?.addEventListener('click', () => {
+    const open = nav?.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(!!open));
+  });
+</script>

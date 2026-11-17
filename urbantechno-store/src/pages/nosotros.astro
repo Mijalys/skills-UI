@@ -1,0 +1,47 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import WaCta from '../components/WaCta.astro';
+import { img } from '../data/products';
+import { SITE } from '../site.config.mjs';
+---
+<Base title="Nosotros" description="Urbantechno_store es una tienda peruana de venta directa de tecnología, zapatillas y lentes 100 % originales. Verificamos cada producto y damos garantía escrita.">
+  <Breadcrumbs items={[{ name: 'Nosotros' }]} />
+  <div class="container page-hero"><h1>Originales o nada</h1><p class="lead">Somos una tienda pequeña de {SITE.city} que vende de forma directa. Sin intermediarios, sin réplicas y sin letra chica.</p></div>
+  <section class="container ab-grid section-tight" style="padding-top:0">
+    <img src={img('1555529669-e69e7aa0ba9a', 900, 700)} alt="Persona revisando prendas colgadas en una tienda" width="900" height="700" loading="eager" decoding="async" />
+    <div>
+      <h2>Lo que hacemos</h2>
+      <ul class="check">
+        <li>Vendemos celulares, laptops, consolas, zapatillas y lentes 100 % originales.</li>
+        <li>Nuevos sellados de fábrica o seminuevos que revisamos uno por uno.</li>
+        <li>Garantía escrita de 6 meses en tecnología y autenticidad garantizada en todo.</li>
+        <li>Atención directa por WhatsApp, de la persona que revisa tu pedido.</li>
+      </ul>
+      <h2 class="mt-40">Lo que no hacemos</h2>
+      <ul class="check no">
+        <li>Reparaciones ni servicio técnico externo.</li>
+        <li>Recibir equipos usados como parte de pago.</li>
+        <li>Vender réplicas o productos sin garantía.</li>
+      </ul>
+    </div>
+  </section>
+  <section class="container section-tight">
+    <h2>Cómo certificamos un seminuevo</h2>
+    <ol class="steps cert">
+      <li><div><strong>Origen y cuentas</strong>IMEI limpio, sin reporte, sin cuentas iCloud o Google vinculadas.</div></li>
+      <li><div><strong>Prueba técnica</strong>Batería, pantalla, cámaras, puertos, audio, red y botones.</div></li>
+      <li><div><strong>Revisión estética</strong>Grado A sin marcas visibles; grado B con micro marcas de uso.</div></li>
+      <li><div><strong>Ficha honesta</strong>Publicamos el estado real y enviamos fotos del equipo antes de confirmar.</div></li>
+    </ol>
+  </section>
+  <WaCta />
+</Base>
+<style>
+  .ab-grid { display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 40px; align-items: start; }
+  .ab-grid img { border-radius: var(--radius); aspect-ratio: 9/7; object-fit: cover; }
+  .cert { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .cert li { grid-template-columns: 1fr; }
+  @media (max-width: 900px) { .ab-grid { grid-template-columns: 1fr; } .cert { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .cert { grid-template-columns: 1fr; } }
+</style>

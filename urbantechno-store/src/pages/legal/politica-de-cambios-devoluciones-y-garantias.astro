@@ -1,0 +1,36 @@
+---
+import Help from '../../layouts/Help.astro';
+import { SITE } from '../../site.config.mjs';
+---
+<Help title="Política de cambios, devoluciones y garantías" h1="Cambios, devoluciones y garantías" description="Garantía escrita de 6 meses en celulares, laptops y consolas. Cambio de talla en zapatillas en 7 días. Devoluciones por error de despacho en 48 horas." section="Legal" updated summary={['6 meses de garantía en celulares, laptops y consolas, nuevos y seminuevos.', 'Errores de despacho o fallas evidentes: 48 horas para reportar, envíos a nuestro cargo.', 'Cambio de talla en zapatillas: 7 días, sin uso, envío a cargo del cliente. Sin devoluciones por cambio de opinión.']}>
+  <p>En {SITE.name} respaldamos la calidad y autenticidad de cada artículo que vendemos bajo las siguientes condiciones.</p>
+  <h2>1. Garantía de 6 meses (celulares, laptops y consolas)</h2>
+  <ul>
+    <li>Todos nuestros celulares, laptops y consolas, nuevos y seminuevos certificados, cuentan con una garantía escrita de seis (6) meses contados desde la fecha de recepción del producto.</li>
+    <li><strong>Cobertura:</strong> fallas técnicas internas de funcionamiento o defectos de fábrica no atribuibles al mal uso.</li>
+    <li><strong>Procedimiento:</strong> el equipo pasa por una evaluación técnica de verificación (3 a 7 días hábiles). Confirmado el defecto de fábrica, procedemos con la reparación, el reemplazo por un equipo de iguales características o la devolución del importe pagado, según disponibilidad de stock.</li>
+  </ul>
+  <h2>2. Exclusiones de la garantía</h2>
+  <p>La garantía queda sin efecto en cualquiera de estos supuestos:</p>
+  <ol>
+    <li>Daños físicos por golpes, caídas, aplastamiento, pantallas rotas o fisuradas.</li>
+    <li>Presencia de humedad, contacto con agua u otros líquidos, o sulfatación interna.</li>
+    <li>Apertura, manipulación o intervención técnica por terceros ajenos a {SITE.name}, o ruptura de sellos de seguridad internos.</li>
+    <li>Daños por fluctuaciones de voltaje, sobrecargas eléctricas o uso de cargadores o cables genéricos no certificados.</li>
+    <li>Desgaste natural por uso normal, incluida la degradación de la batería y el desgaste estético de carcasas y accesorios.</li>
+    <li>Bloqueos de software, cuentas personales (iCloud, Google, PlayStation Network) olvidadas o reportes externos posteriores a la entrega.</li>
+  </ol>
+  <h2>3. Zapatillas y lentes de sol</h2>
+  <ul>
+    <li>Garantizamos la autenticidad al 100 % y la entrega del producto libre de defectos de confección o fabricación.</li>
+    <li><strong>Cambios de talla o modelo (zapatillas):</strong> se aceptan dentro de los 7 días calendario posteriores a la recepción, sujeto a stock. El producto debe devolverse sin uso, limpio, con etiquetas intactas y en su caja original en perfecto estado. Los costos de envío del cambio corren por cuenta del cliente.</li>
+  </ul>
+  <h2>4. Devoluciones por fallas de origen o error de despacho</h2>
+  <ul>
+    <li>Si recibes un producto distinto al solicitado o con una falla de funcionamiento evidente al abrir el paquete, repórtalo dentro de las primeras 48 horas adjuntando fotos o video del desempaque.</li>
+    <li>En estos casos {SITE.name} asume los gastos de retorno y del envío del reemplazo.</li>
+    <li>Por tratarse de equipos electrónicos y artículos de uso personal, no se aceptan devoluciones por cambio de opinión una vez abierto el sello de fábrica (productos nuevos) o tras haber utilizado el artículo.</li>
+  </ul>
+  <h2>5. Canal de atención y Libro de Reclamaciones</h2>
+  <p>Para gestionar cualquier garantía, cambio o solicitud, escríbenos a nuestro canal oficial indicando tu número de pedido o comprobante: WhatsApp <a href={`https://wa.me/${SITE.whatsapp}`}>{SITE.whatsappDisplay}</a> o correo <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. Conforme a la normativa vigente, ponemos a tu disposición nuestro <a href="/libro-de-reclamaciones/">Libro de Reclamaciones virtual</a>.</p>
+</Help>

@@ -1,0 +1,41 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Icons from '../components/Icons.astro';
+import { SITE, waLink } from '../site.config.mjs';
+---
+<Base title="Contacto" description="Escríbenos por WhatsApp o correo. Atención directa de lunes a sábado para pedidos, garantías y cambios.">
+  <Breadcrumbs items={[{ name: 'Contacto' }]} />
+  <div class="container page-hero"><h1>Hablemos</h1><p class="lead">WhatsApp es nuestro canal principal. Si ya compraste, ten a mano tu número de pedido.</p></div>
+  <div class="container grid grid-3 section-tight" style="padding-top:0">
+    <div class="card card-pad">
+      <h3>WhatsApp</h3>
+      <p class="muted">{SITE.hours}</p>
+      <a class="btn btn-wa" href={waLink('Hola, quiero hacer una consulta.')} target="_blank" rel="noopener"><Icons name="wa" />{SITE.whatsappDisplay}</a>
+    </div>
+    <div class="card card-pad">
+      <h3>Correo</h3>
+      <p class="muted">Garantías, reclamos y comprobantes.</p>
+      <a class="btn btn-outline" href={`mailto:${SITE.email}`}>{SITE.email}</a>
+    </div>
+    <div class="card card-pad">
+      <h3>Redes</h3>
+      <p class="muted">Novedades y stock en tiempo real.</p>
+      <div class="flex"><a class="btn btn-outline btn-sm" href={SITE.instagram} target="_blank" rel="noopener">Instagram</a><a class="btn btn-outline btn-sm" href={SITE.tiktok} target="_blank" rel="noopener">TikTok</a></div>
+    </div>
+  </div>
+  <div class="container section-tight" style="padding-top:0">
+    <div class="summary">
+      <h3>Atajos</h3>
+      <ul>
+        <li><a href={waLink('Hola, quiero saber el estado de mi pedido N.º ')}>Estado de mi pedido</a></li>
+        <li><a href={waLink('Hola, quiero activar la garantía de mi pedido N.º ')}>Activar garantía</a></li>
+        <li><a href={waLink('Hola, quiero solicitar un cambio de talla de mi pedido N.º ')}>Cambio de talla</a></li>
+        <li><a href="/libro-de-reclamaciones/">Libro de Reclamaciones</a></li>
+      </ul>
+    </div>
+  </div>
+</Base>
+<style>
+  .card :global(svg) { width: 20px; height: 20px; fill: currentColor; }
+</style>

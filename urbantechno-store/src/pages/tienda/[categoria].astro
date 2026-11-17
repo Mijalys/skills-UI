@@ -1,0 +1,71 @@
+---
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import WaCta from '../../components/WaCta.astro';
+import { categories, byCategory, isTech, img } from '../../data/products';
+import { SITE } from '../../site.config.mjs';
+
+export function getStaticPaths() {
+  return categories.map((c) => ({ params: { categoria: c.slug }, props: { c } }));
+}
+const { c } = Astro.props;
+const list = byCategory(c.slug);
+const tech = isTech(c.slug);
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'CollectionPage', name: c.name, description: c.description, url: `${SITE.url}/tienda/${c.slug}/`,
+    mainEntity: { '@type': 'ItemList', itemListElement: list.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: `${SITE.url}/producto/${p.slug}/`, name: p.name })) } },
+  { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE.url }, { '@type': 'ListItem', position: 2, name: 'Tienda', item: `${SITE.url}/tienda/` }, { '@type': 'ListItem', position: 3, name: c.name, item: `${SITE.url}/tienda/${c.slug}/` } ] },
+];
+---
+<Base title={`${c.name} originales en Perú · ${c.short}`} description={`${c.description} ${c.warranty}. Envíos a todo el Perú.`} image={img(c.image, 1200, 630)} jsonLd={jsonLd}>
+  <Breadcrumbs items={[{ name: 'Tienda', href: '/tienda/' }, { name: c.name }]} />
+  <section class="cat-hero">
+    <div class="container cat-grid">
+      <div>
+        <h1>{c.name}</h1>
+        <p class="lead">{c.description}</p>
+        <div class="flex">
+          <span class="badge badge-nuevo">{c.warranty}</span>
+          {tech && <span class="badge badge-seminuevo">Seminuevos con grado A o B</span>}
+          {c.slug === 'zapatillas' && <span class="badge badge-seminuevo">Cambio de talla en 7 días</span>}
+        </div>
+      </div>
+      <img src={img(c.image, 900, 600)} alt="" width="900" height="600" loading="eager" decoding="async" />
+    </div>
+  </section>
+  <div class="container section-tight">
+    <div class="section-head"><h2>{list.length} {list.length === 1 ? 'producto' : 'productos'}</h2>
+      <nav class="flex" aria-label="Otras categorías">{categories.filter((x) => x.slug !== c.slug).map((x) => <a class="btn btn-outline btn-sm" href={`/tienda/${x.slug}/`}>{x.name}</a>)}</nav>
+    </div>
+    <div class="grid grid-4">{list.map((p, i) => <ProductCard p={p} eager={i < 4} />)}</div>
+  </div>
+  <section class="container section-tight">
+    <div class="summary">
+      <h3>Antes de comprar {c.name.toLowerCase()}</h3>
+      <ul>
+        {tech ? (<>
+          <li>Garantía escrita de 6 meses desde que recibes el equipo, nuevo o seminuevo.</li>
+          <li>No cubre golpes, líquidos, apertura por terceros ni cargadores genéricos.</li>
+          <li>Equipos liberados y con cuentas limpias, listos para activar.</li>
+        </>) : c.slug === 'zapatillas' ? (<>
+          <li>Tallas en US. Consulta la guía de tallas en la ficha o escríbenos.</li>
+          <li>Cambio de talla o modelo en 7 días: sin uso, con caja y etiquetas. El envío lo pagas tú.</li>
+          <li>Autenticidad 100 % garantizada, con caja original.</li>
+        </>) : (<>
+          <li>Lentes originales con estuche, paño y certificado del fabricante.</li>
+          <li>Revisa el producto al recibirlo. Tienes 48 horas para reportar cualquier error.</li>
+          <li>No se aceptan devoluciones por cambio de opinión una vez usado el artículo.</li>
+        </>)}
+      </ul>
+    </div>
+  </section>
+  <WaCta title={`¿Buscas otro modelo de ${c.name.toLowerCase()}?`} text="Conseguimos modelos bajo pedido. Escríbenos y te cotizamos." message={`Hola, busco ${c.name.toLowerCase()} que no veo en la web:`} />
+</Base>
+<style>
+  .cat-hero { background: linear-gradient(135deg, var(--cyan), var(--pale)); }
+  .cat-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 32px; align-items: center; padding: clamp(28px, 5vw, 56px) 0; }
+  .cat-grid img { border-radius: var(--radius); aspect-ratio: 3/2; object-fit: cover; }
+  @media (max-width: 800px) { .cat-grid { grid-template-columns: 1fr; } }
+</style>

@@ -10,7 +10,9 @@ const off = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
     <div class="pc-badges">
       <span class={`badge badge-${p.condition}`}>{p.condition === 'nuevo' ? 'Nuevo sellado' : `Seminuevo · Grado ${p.grade}`}</span>
       {off > 0 && <span class="badge badge-oferta">-{off}%</span>}
+      {p.stock === 0 && <span class="badge badge-agotado">Agotado</span>}
     </div>
+    {p.stockPhoto && <span class="pc-ref">Foto referencial</span>}
   </a>
   <div class="pc-body">
     <p class="pc-brand">{p.brand}</p>
@@ -25,6 +27,7 @@ const off = p.oldPrice ? Math.round((1 - p.price / p.oldPrice) * 100) : 0;
   .pc-img { position: relative; display: block; aspect-ratio: 1; background: var(--surface); }
   .pc-img img { width: 100%; height: 100%; object-fit: cover; }
   .pc-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .pc-ref { position: absolute; right: 10px; bottom: 10px; background: rgba(11,27,43,.72); color: #fff; font-size: 0.72rem; padding: 4px 8px; border-radius: 6px; }
   .pc-body { padding: 16px 18px 20px; display: grid; gap: 4px; }
   .pc-brand { margin: 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); font-weight: 600; }
   .pc-name { margin: 0; font-size: 1.35rem; line-height: 1.05; }

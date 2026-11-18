@@ -1,10 +1,10 @@
 ---
 import Help from '../../layouts/Help.astro';
-import { SITE } from '../../site.config.mjs';
+import { SITE, providerLine } from '../../site.config.mjs';
 ---
 <Help title="Política de privacidad" description="Qué datos personales recogemos para entregar tu pedido, cómo los usamos y cómo ejercer tus derechos según la Ley N.° 29733." section="Legal" updated summary={['Solo pedimos los datos necesarios para procesar y entregar tu pedido: nombre, DNI, teléfono y dirección.', 'Los compartimos únicamente con el courier que entrega tu paquete.', 'Puedes pedir acceso, corrección o eliminación de tus datos por correo o WhatsApp.']}>
   <h2>1. Responsable</h2>
-  <p>{SITE.name}, con atención en {SITE.city}. Contacto: <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.</p>
+  <p>{SITE.name}{providerLine() && <>, {providerLine()}</>}, con atención en {SITE.city}. Contacto: WhatsApp <a href={`https://wa.me/${SITE.whatsapp}`}>{SITE.whatsappDisplay}</a>{SITE.email && <> o <a href={`mailto:${SITE.email}`}>{SITE.email}</a></>}.</p>
   <h2>2. Qué datos recogemos y para qué</h2>
   <div class="table-wrap"><table>
     <thead><tr><th>Dato</th><th>Para qué lo usamos</th></tr></thead>
@@ -24,7 +24,7 @@ import { SITE } from '../../site.config.mjs';
   <h2>4. Cuánto tiempo los conservamos</h2>
   <p>Mientras dure la garantía del producto y los plazos legales de conservación de comprobantes.</p>
   <h2>5. Tus derechos</h2>
-  <p>Puedes solicitar acceso, rectificación, cancelación u oposición al tratamiento de tus datos (derechos ARCO) escribiendo a <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. Respondemos en los plazos que fija la Ley N.° 29733 y su reglamento.</p>
+  <p>Puedes solicitar acceso, rectificación, cancelación u oposición al tratamiento de tus datos (derechos ARCO) escribiéndonos por WhatsApp al <a href={`https://wa.me/${SITE.whatsapp}`}>{SITE.whatsappDisplay}</a>{SITE.email && <> o a <a href={`mailto:${SITE.email}`}>{SITE.email}</a></>}. Respondemos en los plazos que fija la Ley N.° 29733 y su reglamento.</p>
   <h2>6. Cookies</h2>
   <p>Este sitio usa almacenamiento local de tu navegador solo para recordar tu carrito. No usamos cookies de rastreo publicitario.</p>
 </Help>

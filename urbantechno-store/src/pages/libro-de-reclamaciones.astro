@@ -1,60 +1,78 @@
 ---
 import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import { SITE } from '../site.config.mjs';
+import Icons from '../components/Icons.astro';
+import { SITE, providerLine } from '../site.config.mjs';
 ---
-<Base title="Libro de Reclamaciones" description="Libro de Reclamaciones virtual de Urbantecstore conforme al Código de Protección y Defensa del Consumidor. Registra tu reclamo o queja.">
+<Base title="Libro de Reclamaciones" description="Libro de Reclamaciones virtual de Urbantecstore conforme al Código de Protección y Defensa del Consumidor. Registra tu reclamo o queja y recibe tu hoja numerada.">
   <Breadcrumbs items={[{ name: 'Libro de Reclamaciones' }]} />
   <div class="container page-hero">
     <h1>Libro de Reclamaciones</h1>
-    <p class="lead">Conforme al Código de Protección y Defensa del Consumidor (Ley N.° 29571) y al D.S. 011-2011-PCM. Tu hoja de reclamación se envía a nuestro correo oficial y recibes copia.</p>
+    <p class="lead">Conforme al Código de Protección y Defensa del Consumidor (Ley N.° 29571). Al enviar, tu hoja queda registrada con un número correlativo y recibes una copia para guardar.</p>
   </div>
   <div class="container lr-grid section-tight" style="padding-top:0">
-    <form class="card card-pad" data-lr>
-      <h2 class="h-sm">1. Datos del consumidor</h2>
-      <div class="form-row">
-        <div class="field"><label for="n">Nombre completo</label><input class="input" id="n" name="Nombre" required /></div>
-        <div class="field"><label for="d">DNI o CE</label><input class="input" id="d" name="Documento" required /></div>
-      </div>
-      <div class="form-row">
-        <div class="field"><label for="t">Teléfono</label><input class="input" id="t" name="Teléfono" required /></div>
-        <div class="field"><label for="e">Correo electrónico</label><input class="input" id="e" name="Correo" type="email" required /></div>
-      </div>
-      <div class="field"><label for="a">Domicilio</label><input class="input" id="a" name="Domicilio" required /></div>
-      <div class="field"><label><input type="checkbox" name="Menor" value="Sí" /> Soy menor de edad (indicar nombre del padre, madre o tutor en el detalle)</label></div>
+    <div>
+      <form class="card card-pad" data-lr novalidate>
+        <h2 class="h-sm">1. Datos del consumidor</h2>
+        <div class="form-row">
+          <div class="field"><label for="nombre">Nombre completo</label><input class="input" id="nombre" name="nombre" required maxlength="120" autocomplete="name" /></div>
+          <div class="field"><label for="documento">DNI o CE</label><input class="input" id="documento" name="documento" required maxlength="20" /></div>
+        </div>
+        <div class="form-row">
+          <div class="field"><label for="telefono">Teléfono</label><input class="input" id="telefono" name="telefono" required maxlength="30" inputmode="tel" autocomplete="tel" /></div>
+          <div class="field"><label for="correo">Correo electrónico (opcional)</label><input class="input" id="correo" name="correo" type="email" maxlength="120" autocomplete="email" /></div>
+        </div>
+        <div class="field"><label for="domicilio">Domicilio</label><input class="input" id="domicilio" name="domicilio" required maxlength="200" autocomplete="street-address" /></div>
+        <div class="field"><label class="inline"><input type="checkbox" name="menor" value="si" data-menor /> Soy menor de edad</label></div>
+        <div class="field" data-apoderado hidden><label for="apoderado">Nombre del padre, madre o apoderado</label><input class="input" id="apoderado" name="apoderado" maxlength="120" /></div>
 
-      <h2 class="h-sm">2. Identificación del bien contratado</h2>
-      <div class="form-row">
-        <div class="field"><label for="tipo">Tipo</label><select class="input" id="tipo" name="Tipo de bien"><option>Producto</option><option>Servicio</option></select></div>
-        <div class="field"><label for="m">Monto reclamado (S/)</label><input class="input" id="m" name="Monto" inputmode="decimal" /></div>
-      </div>
-      <div class="field"><label for="desc">Descripción del producto y número de pedido</label><input class="input" id="desc" name="Producto" required /></div>
+        <h2 class="h-sm">2. Identificación del bien contratado</h2>
+        <div class="form-row">
+          <div class="field"><label for="tipoBien">Tipo</label><select class="input" id="tipoBien" name="tipoBien"><option>Producto</option><option>Servicio</option></select></div>
+          <div class="field"><label for="monto">Monto reclamado en S/ (opcional)</label><input class="input" id="monto" name="monto" inputmode="decimal" maxlength="20" /></div>
+        </div>
+        <div class="field"><label for="producto">Descripción del producto y número de pedido</label><input class="input" id="producto" name="producto" required maxlength="300" /></div>
 
-      <h2 class="h-sm">3. Detalle</h2>
-      <div class="field"><label for="clase">Tipo</label>
-        <select class="input" id="clase" name="Clase" required>
-          <option value="Reclamo">Reclamo: disconformidad con el producto o servicio</option>
-          <option value="Queja">Queja: malestar por la atención recibida</option>
-        </select>
-      </div>
-      <div class="field"><label for="det">Detalle del reclamo o queja</label><textarea class="input" id="det" name="Detalle" required></textarea></div>
-      <div class="field"><label for="ped">Pedido del consumidor</label><textarea class="input" id="ped" name="Pedido" required placeholder="Qué solución esperas"></textarea></div>
-      <p class="small muted">Fecha de registro: <span data-date></span>. Al enviar declaras que la información es veraz y aceptas el tratamiento de tus datos para atender este reclamo.</p>
-      <button class="btn btn-primary" type="submit">Enviar hoja de reclamación</button>
-      <p class="toast mt-24" data-ok hidden>Se abrió tu correo con la hoja completa dirigida a {SITE.email}. Si no se abrió, escríbenos por WhatsApp.</p>
-    </form>
-    <aside class="side">
+        <h2 class="h-sm">3. Detalle</h2>
+        <fieldset class="field clase">
+          <legend>Tipo</legend>
+          <label class="inline"><input type="radio" name="clase" value="Reclamo" checked /> <span><strong>Reclamo:</strong> disconformidad con el producto o servicio.</span></label>
+          <label class="inline"><input type="radio" name="clase" value="Queja" /> <span><strong>Queja:</strong> malestar con la atención recibida.</span></label>
+        </fieldset>
+        <div class="field"><label for="detalle">Detalle del reclamo o queja</label><textarea class="input" id="detalle" name="detalle" required maxlength="3000"></textarea></div>
+        <div class="field"><label for="pedido">Pedido del consumidor</label><textarea class="input" id="pedido" name="pedido" required maxlength="1500" placeholder="Qué solución esperas"></textarea></div>
+        <div class="hp" aria-hidden="true"><label for="web">No llenar</label><input id="web" name="web" tabindex="-1" autocomplete="off" /></div>
+        <label class="inline accept"><input type="checkbox" name="acepta" required /> Declaro que la información es veraz y autorizo el uso de mis datos solo para atender esta hoja, según la <a href="/legal/politica-de-privacidad/" target="_blank">Política de privacidad</a>.</label>
+        <p class="form-error" role="alert" data-error hidden></p>
+        <button class="btn btn-primary" type="submit" data-submit>Registrar hoja de reclamación</button>
+      </form>
+
+      <section class="card card-pad sheet" data-sheet hidden aria-live="polite">
+        <p class="eyebrow">Hoja registrada</p>
+        <h2>Hoja de reclamación <span data-codigo></span></h2>
+        <p class="muted mb-0">Registrada el <span data-fecha></span></p>
+        <p class="muted">Guarda este número: lo necesitas para el seguimiento.</p>
+        <dl class="sheet-data" data-resumen></dl>
+        <p class="small"><strong>Proveedor:</strong> {SITE.name}{providerLine() && <> · {providerLine()}</>} · WhatsApp {SITE.whatsappDisplay}</p>
+        <p class="small muted">Respondemos en un plazo máximo de 15 días hábiles. La presentación de esta hoja no impide acudir a otras vías de solución de controversias ni es requisito previo para interponer una denuncia ante el INDECOPI.</p>
+        <div class="flex no-print">
+          <button class="btn btn-primary" type="button" data-print>Descargar o imprimir copia</button>
+          <a class="btn btn-wa" href="#" target="_blank" rel="noopener" data-wa><Icons name="wa" />Avisar a la tienda por WhatsApp</a>
+        </div>
+      </section>
+    </div>
+    <aside class="side no-print">
       <div class="summary" style="margin:0">
-        <h3>Plazos</h3>
+        <h2 class="h4">Plazos</h2>
         <ul>
           <li>Respondemos en un máximo de 15 días hábiles.</li>
-          <li>Conservamos tu hoja por 2 años.</li>
-          <li>La respuesta llega al correo que indiques.</li>
+          <li>Conservamos tu hoja por al menos 2 años.</li>
+          <li>La respuesta llega a tu correo o WhatsApp.</li>
         </ul>
       </div>
       <div class="card card-pad">
-        <h4>Datos del proveedor</h4>
-        <p class="small mb-0"><strong>{SITE.name}</strong><br />{SITE.city}<br />{SITE.email}<br />WhatsApp {SITE.whatsappDisplay}</p>
+        <h2 class="h4">Datos del proveedor</h2>
+        <p class="small mb-0"><strong>{SITE.name}</strong><br />{SITE.razonSocial && <>{SITE.razonSocial}<br /></>}{SITE.ruc && <>RUC {SITE.ruc}<br /></>}{SITE.direccion || SITE.city}<br />{SITE.email && <>{SITE.email}<br /></>}WhatsApp {SITE.whatsappDisplay}</p>
       </div>
     </aside>
   </div>
@@ -64,19 +82,73 @@ import { SITE } from '../site.config.mjs';
   .h-sm { font-size: 1.3rem; margin: 20px 0 12px; letter-spacing: 0.06em; }
   .h-sm:first-child { margin-top: 0; }
   .side { display: grid; gap: 16px; }
-  .toast { background: var(--mint); padding: 10px 14px; border-radius: var(--radius-sm); }
-  @media (max-width: 900px) { .lr-grid { grid-template-columns: 1fr; } }
+  .inline { display: flex; gap: 8px; align-items: start; font-family: var(--font-body) !important; text-transform: none !important; letter-spacing: 0 !important; font-weight: 400 !important; font-size: 0.95rem !important; }
+  .clase { border: 0; padding: 0; margin: 0 0 16px; }
+  .clase legend { font-family: var(--font-display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.9rem; margin-bottom: 6px; }
+  .accept { margin: 8px 0 16px; }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .form-error { background: #fde2e1; color: #8a1f15; padding: 10px 14px; border-radius: var(--radius-sm); }
+  .sheet { scroll-margin-top: 90px; }
+  .sheet h2 { font-size: clamp(1.6rem, 4vw, 2.2rem); }
+  .sheet-data { display: grid; grid-template-columns: 200px 1fr; gap: 6px 16px; margin: 16px 0; }
+  .sheet-data :global(dt) { font-weight: 600; color: var(--ink-2); }
+  .sheet-data :global(dd) { margin: 0; white-space: pre-wrap; word-break: break-word; }
+  .sheet .btn :global(svg) { width: 20px; height: 20px; fill: currentColor; }
+  @media (max-width: 900px) { .lr-grid { grid-template-columns: 1fr; } .sheet-data { grid-template-columns: 1fr; } .sheet-data :global(dt) { margin-top: 8px; } }
+  @media print {
+    :global(header), :global(footer), :global(.trust), :global(.crumbs), :global(.page-hero), .no-print, :global(.wa-float) { display: none !important; }
+    .lr-grid { display: block; }
+    .sheet { border: 0; padding: 0; }
+  }
 </style>
 <script>
   import { SITE } from '../site.config.mjs';
-  const d = new Date();
-  document.querySelector('[data-date]')!.textContent = d.toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric' });
-  document.querySelector<HTMLFormElement>('[data-lr]')?.addEventListener('submit', (e) => {
+  const form = document.querySelector<HTMLFormElement>('[data-lr]')!;
+  const sheet = document.querySelector<HTMLElement>('[data-sheet]')!;
+  const errorBox = document.querySelector<HTMLElement>('[data-error]')!;
+  const submit = document.querySelector<HTMLButtonElement>('[data-submit]')!;
+  const menor = form.querySelector<HTMLInputElement>('[data-menor]')!;
+  const apoderado = document.querySelector<HTMLElement>('[data-apoderado]')!;
+  menor.addEventListener('change', () => { apoderado.hidden = !menor.checked; (apoderado.querySelector('input') as HTMLInputElement).required = menor.checked; });
+
+  const LABELS: Record<string, string> = {
+    nombre: 'Consumidor', documento: 'DNI o CE', telefono: 'Teléfono', correo: 'Correo', domicilio: 'Domicilio', apoderado: 'Padre, madre o apoderado',
+    tipoBien: 'Bien contratado', monto: 'Monto reclamado (S/)', producto: 'Producto y pedido', clase: 'Tipo', detalle: 'Detalle', pedido: 'Pedido del consumidor',
+  };
+  const showError = (m: string) => { errorBox.textContent = m; errorBox.hidden = false; };
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const f = new FormData(e.target as HTMLFormElement);
-    const body = ['HOJA DE RECLAMACIÓN', `Fecha: ${d.toLocaleString('es-PE')}`, '', ...[...f.entries()].map(([k, v]) => `${k}: ${v}`)].join('\n');
-    const subject = `Libro de Reclamaciones - ${f.get('Clase')} - ${f.get('Nombre')}`;
-    window.location.href = `mailto:${SITE.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    document.querySelector<HTMLElement>('[data-ok]')!.hidden = false;
+    errorBox.hidden = true;
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    const f = new FormData(form);
+    const data: Record<string, unknown> = Object.fromEntries([...f.entries()].map(([k, v]) => [k, String(v)]));
+    data.acepta = f.get('acepta') === 'on';
+    submit.disabled = true; submit.textContent = 'Registrando…';
+    try {
+      const res = await fetch('/api/reclamos', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) });
+      const out = await res.json().catch(() => ({}));
+      if (!res.ok || !out.codigo) throw new Error(out.error || 'No pudimos registrar la hoja.');
+      const fecha = new Date(out.fecha).toLocaleString('es-PE', { timeZone: 'America/Lima', dateStyle: 'long', timeStyle: 'short' });
+      sheet.querySelector('[data-codigo]')!.textContent = out.codigo;
+      sheet.querySelector('[data-fecha]')!.textContent = fecha;
+      const dl = sheet.querySelector('[data-resumen]')!;
+      dl.replaceChildren();
+      for (const [k, label] of Object.entries(LABELS)) {
+        const v = String(data[k] ?? '').trim(); if (!v) continue;
+        const dt = document.createElement('dt'); dt.textContent = label;
+        const dd = document.createElement('dd'); dd.textContent = v;
+        dl.append(dt, dd);
+      }
+      const msg = `Hola, registré la hoja de reclamación ${out.codigo} (${data.clase}) en el Libro de Reclamaciones. Nombre: ${data.nombre}. Pedido: ${data.producto}.`;
+      sheet.querySelector<HTMLAnchorElement>('[data-wa]')!.href = `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(msg)}`;
+      form.hidden = true; sheet.hidden = false;
+      sheet.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      showError(`${(err as Error).message} Si el problema continúa, escríbenos por WhatsApp al ${SITE.whatsappDisplay} indicando que quieres registrar un reclamo.`);
+    } finally {
+      submit.disabled = false; submit.textContent = 'Registrar hoja de reclamación';
+    }
   });
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
 </script>

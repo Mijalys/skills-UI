@@ -1,3 +1,5 @@
+import catalogoCsv from './catalogo.csv?raw';
+
 export type Condition = 'nuevo' | 'seminuevo';
 export type Grade = 'A' | 'B';
 
@@ -27,6 +29,8 @@ export interface Product {
   sizes?: string[];
   stock: number;
   featured?: boolean;
+  /** true cuando la foto es de stock (Unsplash) y no del producto real */
+  stockPhoto: boolean;
 }
 
 export const categories: Category[] = [
@@ -72,336 +76,66 @@ export const categories: Category[] = [
   },
 ];
 
-export const products: Product[] = [
-  // Celulares
-  {
-    slug: 'iphone-15-128gb',
-    name: 'iPhone 15 128 GB',
-    brand: 'Apple',
-    category: 'celulares',
-    condition: 'nuevo',
-    price: 3499,
-    oldPrice: 3799,
-    image: '1591337676887-a217a6970a8a',
-    alt: 'iPhone blanco visto desde atrás sobre fondo amarillo',
-    short: 'Sellado de fábrica, liberado, con cable USB-C original.',
-    specs: ['Pantalla 6.1" Super Retina XDR', 'Chip A16 Bionic', 'Cámara principal 48 MP', 'USB-C', 'Liberado para todo operador'],
-    includes: ['Caja sellada', 'Cable USB-C a USB-C', 'Documentación Apple'],
-    stock: 4,
-    featured: true,
-  },
-  {
-    slug: 'iphone-13-pro-128gb-seminuevo',
-    name: 'iPhone 13 Pro 128 GB',
-    brand: 'Apple',
-    category: 'celulares',
-    condition: 'seminuevo',
-    grade: 'A',
-    price: 2399,
-    image: '1592750475338-74b7b21085ab',
-    alt: 'Parte trasera de un iPhone Pro gris con triple cámara',
-    short: 'Grado A: sin marcas visibles, batería al 89 %.',
-    specs: ['Pantalla 6.1" ProMotion 120 Hz', 'Chip A15 Bionic', 'Triple cámara 12 MP', 'Salud de batería 89 %', 'Liberado'],
-    includes: ['Equipo verificado', 'Cable Lightning', 'Caja genérica de protección'],
-    stock: 2,
-    featured: true,
-  },
-  {
-    slug: 'samsung-galaxy-s24-256gb',
-    name: 'Samsung Galaxy S24 256 GB',
-    brand: 'Samsung',
-    category: 'celulares',
-    condition: 'nuevo',
-    price: 3199,
-    image: '1610945265064-0e34e5519bbf',
-    alt: 'Samsung Galaxy violeta sobre su caja negra',
-    short: 'Sellado, con Galaxy AI y 7 años de actualizaciones.',
-    specs: ['Pantalla 6.2" AMOLED 120 Hz', 'Snapdragon 8 Gen 3', '8 GB RAM', 'Cámara 50 MP', 'Liberado'],
-    includes: ['Caja sellada', 'Cable USB-C', 'Herramienta SIM'],
-    stock: 3,
-  },
-  {
-    slug: 'iphone-12-64gb-seminuevo',
-    name: 'iPhone 12 64 GB',
-    brand: 'Apple',
-    category: 'celulares',
-    condition: 'seminuevo',
-    grade: 'B',
-    price: 1499,
-    image: '1605236453806-6ff36851218e',
-    alt: 'iPhone con pantalla encendida mostrando un paisaje',
-    short: 'Grado B: micro marcas en el borde, pantalla impecable.',
-    specs: ['Pantalla 6.1" OLED', 'Chip A14 Bionic', 'Doble cámara 12 MP', 'Salud de batería 84 %', 'Liberado'],
-    includes: ['Equipo verificado', 'Cable Lightning'],
-    stock: 1,
-  },
-  // Laptops
-  {
-    slug: 'macbook-air-m2-13',
-    name: 'MacBook Air M2 13" 256 GB',
-    brand: 'Apple',
-    category: 'laptops',
-    condition: 'nuevo',
-    price: 4599,
-    oldPrice: 4999,
-    image: '1496181133206-80ce9b88a853',
-    alt: 'MacBook abierta sobre un escritorio de madera',
-    short: 'Sellada, teclado en español, 8 GB de memoria unificada.',
-    specs: ['Chip Apple M2', '8 GB RAM · 256 GB SSD', 'Pantalla 13.6" Liquid Retina', 'Hasta 18 h de batería', 'MagSafe 3'],
-    includes: ['Caja sellada', 'Cargador 30 W', 'Cable MagSafe'],
-    stock: 2,
-    featured: true,
-  },
-  {
-    slug: 'macbook-pro-14-m3-seminuevo',
-    name: 'MacBook Pro 14" M3 512 GB',
-    brand: 'Apple',
-    category: 'laptops',
-    condition: 'seminuevo',
-    grade: 'A',
-    price: 6999,
-    image: '1517336714731-489689fd1ca8',
-    alt: 'MacBook Pro con la pantalla iluminada en tonos violeta',
-    short: 'Grado A: 41 ciclos de batería, sin marcas.',
-    specs: ['Chip Apple M3', '16 GB RAM · 512 GB SSD', 'Pantalla 14.2" Liquid Retina XDR', '41 ciclos de carga', 'HDMI, SDXC, 2× Thunderbolt'],
-    includes: ['Equipo verificado', 'Cargador 70 W original', 'Cable MagSafe'],
-    stock: 1,
-  },
-  {
-    slug: 'dell-xps-13-seminuevo',
-    name: 'Dell XPS 13 i7 16 GB',
-    brand: 'Dell',
-    category: 'laptops',
-    condition: 'seminuevo',
-    grade: 'A',
-    price: 3299,
-    image: '1593642632823-8f785ba67e45',
-    alt: 'Laptop delgada con fondo de pantalla abstracto',
-    short: 'Grado A: ideal para trabajo y estudio, Windows 11 Pro.',
-    specs: ['Intel Core i7 12.ª gen', '16 GB RAM · 512 GB SSD', 'Pantalla 13.4" FHD+', 'Windows 11 Pro', 'Teclado retroiluminado'],
-    includes: ['Equipo verificado', 'Cargador USB-C 65 W'],
-    stock: 1,
-  },
-  // Consolas
-  {
-    slug: 'playstation-5-slim',
-    name: 'PlayStation 5 Slim 1 TB',
-    brand: 'Sony',
-    category: 'consolas',
-    condition: 'nuevo',
-    price: 2399,
-    oldPrice: 2599,
-    image: '1606144042614-b2417e99c4e3',
-    alt: 'Consola PlayStation 5 blanca con su mando DualSense',
-    short: 'Sellada, con lector de discos y mando DualSense.',
-    specs: ['1 TB SSD', 'Lector de discos Ultra HD Blu-ray', 'Mando DualSense', '4K a 120 Hz', 'Ray tracing'],
-    includes: ['Caja sellada', 'Mando DualSense', 'Cable HDMI y de poder', 'Base vertical'],
-    stock: 3,
-    featured: true,
-  },
-  {
-    slug: 'xbox-series-x',
-    name: 'Xbox Series X 1 TB',
-    brand: 'Microsoft',
-    category: 'consolas',
-    condition: 'nuevo',
-    price: 2299,
-    image: '1621259182978-fbf93132d53d',
-    alt: 'Xbox Series X negra con mando sobre fondo verde',
-    short: 'Sellada, la Xbox más potente, 1 TB de almacenamiento.',
-    specs: ['1 TB SSD', '12 teraflops', '4K a 120 Hz', 'Mando inalámbrico Xbox', 'Retrocompatible'],
-    includes: ['Caja sellada', 'Mando inalámbrico', 'Cable HDMI y de poder'],
-    stock: 2,
-  },
-  {
-    slug: 'playstation-4-slim-1tb-seminuevo',
-    name: 'PlayStation 4 Slim 1 TB',
-    brand: 'Sony',
-    category: 'consolas',
-    condition: 'seminuevo',
-    grade: 'B',
-    price: 999,
-    image: '1486401899868-0e435ed85128',
-    alt: 'PlayStation 4 blanca con mando sobre fondo blanco',
-    short: 'Grado B: lector y puertos probados, mando original.',
-    specs: ['1 TB HDD', 'Lector Blu-ray probado', 'Mando DualShock 4 original', 'Full HD', 'Cuenta PSN limpia'],
-    includes: ['Equipo verificado', 'Mando DualShock 4', 'Cable HDMI y de poder'],
-    stock: 1,
-  },
-  {
-    slug: 'mando-xbox-inalambrico',
-    name: 'Mando inalámbrico Xbox',
-    brand: 'Microsoft',
-    category: 'consolas',
-    condition: 'nuevo',
-    price: 249,
-    image: '1612287230202-1ff1d85d1bdf',
-    alt: 'Mando de Xbox sobre fondo degradado celeste y violeta',
-    short: 'Sellado, compatible con Xbox, PC y celular.',
-    specs: ['Bluetooth y USB-C', 'Compatible con Xbox, Windows, iOS y Android', 'Agarre texturizado', 'Hasta 40 h con pilas AA'],
-    includes: ['Caja sellada', '2 pilas AA'],
-    stock: 6,
-  },
-  // Zapatillas
-  {
-    slug: 'nike-air-force-1-07-blancas',
-    name: "Nike Air Force 1 '07 Blancas",
-    brand: 'Nike',
-    category: 'zapatillas',
-    condition: 'nuevo',
-    price: 449,
-    image: '1600269452121-4f2416e55c28',
-    alt: 'Zapatilla Nike Air Force 1 blanca sobre fondo negro',
-    short: 'Originales, con caja y etiquetas. El clásico que combina con todo.',
-    specs: ['Cuero premium', 'Suela de goma con amortiguación Air', 'Talla US', 'Modelo CW2288-111'],
-    includes: ['Caja original', 'Etiquetas'],
-    sizes: ['38', '39', '40', '41', '42', '43', '44'],
-    stock: 8,
-    featured: true,
-  },
-  {
-    slug: 'nike-air-max-90',
-    name: 'Nike Air Max 90',
-    brand: 'Nike',
-    category: 'zapatillas',
-    condition: 'nuevo',
-    price: 529,
-    oldPrice: 599,
-    image: '1600185365926-3a2ce3cdb9eb',
-    alt: 'Zapatilla Nike Air Max 90 blanca con detalles naranjas',
-    short: 'Originales, ventana Air visible, caja y etiquetas.',
-    specs: ['Malla y cuero', 'Unidad Air visible', 'Talla US', 'Suela waffle'],
-    includes: ['Caja original', 'Etiquetas'],
-    sizes: ['39', '40', '41', '42', '43'],
-    stock: 5,
-  },
-  {
-    slug: 'air-jordan-1-retro-high',
-    name: 'Air Jordan 1 Retro High',
-    brand: 'Jordan',
-    category: 'zapatillas',
-    condition: 'nuevo',
-    price: 899,
-    image: '1552346154-21d32810aba3',
-    alt: 'Par de Air Jordan 1 rojas, negras y blancas sobre una cancha',
-    short: 'Originales, con caja y etiquetas. Stock limitado.',
-    specs: ['Cuero premium', 'Caña alta', 'Talla US', 'Suela de goma'],
-    includes: ['Caja original', 'Etiquetas'],
-    sizes: ['40', '41', '42', '43'],
-    stock: 2,
-    featured: true,
-  },
-  {
-    slug: 'vans-old-skool',
-    name: 'Vans Old Skool',
-    brand: 'Vans',
-    category: 'zapatillas',
-    condition: 'nuevo',
-    price: 299,
-    image: '1525966222134-fcfa99b8ae77',
-    alt: 'Zapatilla Vans Old Skool guinda sobre fondo amarillo',
-    short: 'Originales, lona y gamuza, caja y etiquetas.',
-    specs: ['Lona y gamuza', 'Suela waffle vulcanizada', 'Talla US', 'Franja lateral icónica'],
-    includes: ['Caja original', 'Etiquetas'],
-    sizes: ['37', '38', '39', '40', '41', '42', '43', '44'],
-    stock: 7,
-  },
-  {
-    slug: 'nike-air-force-1-negras',
-    name: "Nike Air Force 1 '07 Negras",
-    brand: 'Nike',
-    category: 'zapatillas',
-    condition: 'nuevo',
-    price: 449,
-    image: '1543508282-6319a3e2621f',
-    alt: 'Zapatilla Nike Air Force 1 negra sobre fondo claro',
-    short: 'Originales, con caja y etiquetas.',
-    specs: ['Cuero premium', 'Suela de goma con amortiguación Air', 'Talla US'],
-    includes: ['Caja original', 'Etiquetas'],
-    sizes: ['39', '40', '41', '42', '43', '44'],
-    stock: 4,
-  },
-  {
-    slug: 'puma-smash-blancas',
-    name: 'Puma Smash v2 Blancas',
-    brand: 'Puma',
-    category: 'zapatillas',
-    condition: 'nuevo',
-    price: 259,
-    image: '1608231387042-66d1773070a5',
-    alt: 'Zapatilla Puma blanca sobre fondo negro',
-    short: 'Originales, cuero sintético, caja y etiquetas.',
-    specs: ['Cuero sintético', 'Suela de goma', 'Talla US'],
-    includes: ['Caja original', 'Etiquetas'],
-    sizes: ['38', '39', '40', '41', '42', '43'],
-    stock: 6,
-  },
-  // Lentes
-  {
-    slug: 'ray-ban-wayfarer-classic',
-    name: 'Ray-Ban Wayfarer Classic',
-    brand: 'Ray-Ban',
-    category: 'lentes-de-sol',
-    condition: 'nuevo',
-    price: 549,
-    image: '1572635196237-14b3f281503f',
-    alt: 'Lentes de sol Ray-Ban Wayfarer negros',
-    short: 'Originales, con estuche y paño. Lentes G-15 con protección UV.',
-    specs: ['Montura de acetato negro', 'Lentes G-15 verdes', 'Protección UV 100 %', 'Modelo RB2140'],
-    includes: ['Estuche original', 'Paño de limpieza', 'Certificado'],
-    sizes: ['Única'],
-    stock: 3,
-    featured: true,
-  },
-  {
-    slug: 'ray-ban-round-metal',
-    name: 'Ray-Ban Round Metal',
-    brand: 'Ray-Ban',
-    category: 'lentes-de-sol',
-    condition: 'nuevo',
-    price: 589,
-    image: '1511499767150-a48a237f0083',
-    alt: 'Lentes de sol redondos con montura metálica dorada',
-    short: 'Originales, montura dorada, lentes verdes clásicos.',
-    specs: ['Montura metálica dorada', 'Lentes G-15', 'Protección UV 100 %', 'Modelo RB3447'],
-    includes: ['Estuche original', 'Paño de limpieza', 'Certificado'],
-    sizes: ['Única'],
-    stock: 2,
-  },
-  {
-    slug: 'lentes-redondos-acetato-transparente',
-    name: 'Lentes redondos acetato transparente',
-    brand: 'Hawkers',
-    category: 'lentes-de-sol',
-    condition: 'nuevo',
-    price: 189,
-    image: '1577803645773-f96470509666',
-    alt: 'Lentes de sol redondos con montura transparente junto al mar',
-    short: 'Originales, lentes marrones degradados con protección UV.',
-    specs: ['Montura de acetato transparente', 'Lentes marrones degradados', 'Protección UV400'],
-    includes: ['Estuche', 'Paño de limpieza'],
-    sizes: ['Única'],
-    stock: 5,
-  },
-  {
-    slug: 'lentes-cat-eye-rosados',
-    name: 'Lentes cat-eye rosados',
-    brand: 'Hawkers',
-    category: 'lentes-de-sol',
-    condition: 'nuevo',
-    price: 169,
-    image: '1509695507497-903c140c43b0',
-    alt: 'Lentes de sol rosados con estuche amarillo',
-    short: 'Originales, ligeros, protección UV400.',
-    specs: ['Montura cat-eye', 'Lentes rosados', 'Protección UV400'],
-    includes: ['Estuche', 'Paño de limpieza'],
-    sizes: ['Única'],
-    stock: 4,
-  },
-];
+// El catálogo vive en catalogo.csv (se puede abrir y editar en Excel o Google Sheets).
+// Listas dentro de una celda se separan con " | ". Una fila con stock 0 se muestra como agotada.
+function parseCsv(text: string): string[][] {
+  const rows: string[][] = []; let row: string[] = []; let cell = ''; let quoted = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (quoted) {
+      if (c === '"' && text[i + 1] === '"') { cell += '"'; i++; }
+      else if (c === '"') quoted = false;
+      else cell += c;
+    } else if (c === '"') quoted = true;
+    else if (c === ',') { row.push(cell); cell = ''; }
+    else if (c === '\n' || c === '\r') {
+      if (c === '\r' && text[i + 1] === '\n') i++;
+      row.push(cell); cell = '';
+      if (row.some((v) => v.trim() !== '')) rows.push(row);
+      row = [];
+    } else cell += c;
+  }
+  row.push(cell);
+  if (row.some((v) => v.trim() !== '')) rows.push(row);
+  return rows;
+}
+const list = (v: string) => v.split('|').map((x) => x.trim()).filter(Boolean);
 
+function loadProducts(): Product[] {
+  const [head, ...rows] = parseCsv(catalogoCsv);
+  const col = (name: string) => { const i = head.indexOf(name); if (i < 0) throw new Error(`catalogo.csv: falta la columna "${name}"`); return i; };
+  const C = Object.fromEntries(['slug','nombre','marca','categoria','condicion','grado','precio','precio_anterior','stock','destacado','imagen_unsplash','imagen_alt','resumen','especificaciones','incluye','tallas'].map((n) => [n, col(n)]));
+  const seen = new Set<string>();
+  return rows.map((r, n) => {
+    const line = n + 2; const get = (k: string) => (r[C[k]] ?? '').trim();
+    const fail = (m: string) => { throw new Error(`catalogo.csv fila ${line}: ${m}`); };
+    const slug = get('slug'); if (!/^[a-z0-9-]+$/.test(slug)) fail(`slug inválido "${slug}"`);
+    if (seen.has(slug)) fail(`slug repetido "${slug}"`); seen.add(slug);
+    const category = get('categoria'); if (!categories.some((c) => c.slug === category)) fail(`categoría desconocida "${category}"`);
+    const condition = get('condicion'); if (condition !== 'nuevo' && condition !== 'seminuevo') fail('condicion debe ser nuevo o seminuevo');
+    const grade = get('grado'); if (condition === 'seminuevo' && grade !== 'A' && grade !== 'B') fail('un seminuevo necesita grado A o B');
+    const price = Number(get('precio')); if (!(price > 0)) fail('precio inválido');
+    const old = get('precio_anterior') ? Number(get('precio_anterior')) : undefined;
+    if (old !== undefined && !(old > price)) fail('precio_anterior debe ser mayor que precio (y haberse cobrado de verdad)');
+    const stock = Number(get('stock') || '0'); if (!Number.isInteger(stock) || stock < 0) fail('stock inválido');
+    const image = get('imagen_unsplash'); if (!image) fail('falta la imagen');
+    return {
+      slug, name: get('nombre'), brand: get('marca'), category, condition: condition as Condition,
+      grade: (grade || undefined) as Grade | undefined, price, oldPrice: old, stock,
+      featured: /^(si|sí|x|1|true)$/i.test(get('destacado')),
+      image, alt: get('imagen_alt') || get('nombre'), short: get('resumen'),
+      specs: list(get('especificaciones')), includes: list(get('incluye')),
+      sizes: get('tallas') ? list(get('tallas')) : undefined,
+      stockPhoto: !/^(\/|https?:)/.test(image),
+    };
+  });
+}
+
+export const products: Product[] = loadProducts();
+
+// Acepta un ID de Unsplash, una ruta propia (/fotos/x.jpg en public/) o una URL completa.
 export const img = (id: string, w = 800, h?: number) =>
-  `https://images.unsplash.com/photo-${id}?w=${w}${h ? `&h=${h}` : ''}&q=75&auto=format&fit=crop`;
+  /^(\/|https?:)/.test(id) ? id : `https://images.unsplash.com/photo-${id}?w=${w}${h ? `&h=${h}` : ''}&q=75&auto=format&fit=crop`;
 
 export const soles = (n: number) =>
   'S/ ' + n.toLocaleString('es-PE', { minimumFractionDigits: 0 });

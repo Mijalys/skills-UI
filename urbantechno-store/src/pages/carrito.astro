@@ -2,7 +2,6 @@
 import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Icons from '../components/Icons.astro';
-import { SITE } from '../site.config.mjs';
 ---
 <Base title="Carrito y pedido" description="Revisa tu carrito y envía tu pedido por WhatsApp. Pagas por transferencia, Yape, Plin, Agora o tarjeta." noindex>
   <Breadcrumbs items={[{ name: 'Carrito' }]} />
@@ -31,6 +30,7 @@ import { SITE } from '../site.config.mjs';
         </div>
         <div class="totals"><span>Subtotal</span><strong data-total>S/ 0</strong></div>
         <p class="small muted">El envío se cotiza según tu ciudad y se suma al confirmar. Tu pedido queda confirmado cuando verificamos el pago.</p>
+        <label class="accept"><input type="checkbox" required /> Autorizo el uso de mis datos (nombre, DNI, teléfono y dirección) solo para procesar y entregar este pedido, según la <a href="/legal/politica-de-privacidad/" target="_blank">Política de privacidad</a>.</label>
         <label class="accept"><input type="checkbox" required /> Acepto los <a href="/legal/terminos-y-condiciones/" target="_blank">Términos y condiciones</a> y la <a href="/legal/politica-de-cambios-devoluciones-y-garantias/" target="_blank">Política de cambios y garantías</a>.</label>
         <button class="btn btn-wa btn-block" type="submit"><Icons name="wa" />Enviar pedido por WhatsApp</button>
       </form>
@@ -52,7 +52,7 @@ import { SITE } from '../site.config.mjs';
   .qty span { width: 32px; display: grid; place-items: center; font-weight: 600; }
   .rm { background: none; border: 0; color: var(--ink-3); cursor: pointer; font-size: 0.85rem; text-decoration: underline; }
   .totals { display: flex; justify-content: space-between; font-size: 1.3rem; margin: 8px 0; font-family: var(--font-display); text-transform: uppercase; }
-  .accept { display: flex; gap: 8px; align-items: start; font-size: 0.92rem; margin: 12px 0 16px; }
+  .accept { display: flex; gap: 8px; align-items: start; font-size: 0.92rem; margin: 12px 0; }
   .checkout :global(svg) { width: 20px; height: 20px; fill: currentColor; }
   @media (max-width: 900px) { .cart-grid { grid-template-columns: 1fr; } }
 </style>
@@ -64,12 +64,14 @@ import { SITE } from '../site.config.mjs';
   const checkout = document.querySelector<HTMLElement>('[data-checkout]')!;
   const totalEl = document.querySelector<HTMLElement>('[data-total]')!;
 
+  const esc = (v: unknown) => String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
+  const safeImg = (u: string) => (/^(https:\/\/images\.unsplash\.com\/|\/)/.test(u) ? u : '/favicon.svg');
   const render = () => {
     const items = readCart();
     wrap.innerHTML = items.map((i, idx) => `
       <div class="ci">
-        <img src="${i.image}" alt="" />
-        <div><div class="ci-name">${i.name}</div><div class="ci-meta">${i.size ? `Talla ${i.size} · ` : ''}${soles(i.price)} c/u</div></div>
+        <img src="${esc(safeImg(i.image))}" alt="" />
+        <div><div class="ci-name">${esc(i.name)}</div><div class="ci-meta">${i.size ? `Talla ${esc(i.size)} · ` : ''}${soles(i.price)} c/u</div></div>
         <div class="ci-right">
           <div class="ci-price">${soles(i.price * i.qty)}</div>
           <div class="qty"><button type="button" data-dec="${idx}" aria-label="Quitar uno">−</button><span>${i.qty}</span><button type="button" data-inc="${idx}" aria-label="Agregar uno">+</button></div>

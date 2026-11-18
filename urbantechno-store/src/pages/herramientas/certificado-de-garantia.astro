@@ -1,0 +1,90 @@
+---
+// Herramienta interna: genera el certificado de garantía escrita para cada pedido.
+import Base from '../../layouts/Base.astro';
+import Logo from '../../components/Logo.astro';
+import { SITE, providerLine } from '../../site.config.mjs';
+---
+<Base title="Certificado de garantía" description="Herramienta interna para emitir el certificado de garantía escrita." noindex trust={false}>
+  <div class="container section-tight">
+    <form class="card card-pad no-print tool" data-cert>
+      <h1 class="h3">Emitir certificado de garantía</h1>
+      <p class="muted small">Completa los datos del pedido, revisa la vista previa y pulsa "Descargar o imprimir". Nada de esto se guarda ni se envía.</p>
+      <div class="form-row">
+        <div class="field"><label for="pedido">N.º de pedido</label><input class="input" id="pedido" name="pedido" /></div>
+        <div class="field"><label for="entrega">Fecha de recepción</label><input class="input" id="entrega" name="entrega" type="date" /></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label for="cliente">Cliente</label><input class="input" id="cliente" name="cliente" /></div>
+        <div class="field"><label for="dni">DNI</label><input class="input" id="dni" name="dni" /></div>
+      </div>
+      <div class="form-row">
+        <div class="field"><label for="producto">Producto</label><input class="input" id="producto" name="producto" placeholder="Ej. iPhone 13 Pro 128 GB" /></div>
+        <div class="field"><label for="serie">IMEI o número de serie</label><input class="input" id="serie" name="serie" /></div>
+      </div>
+      <div class="field"><label for="condicion">Condición</label>
+        <select class="input" id="condicion" name="condicion"><option>Nuevo sellado</option><option>Seminuevo certificado · Grado A</option><option>Seminuevo certificado · Grado B</option></select>
+      </div>
+      <button class="btn btn-primary" type="button" data-print>Descargar o imprimir</button>
+    </form>
+
+    <article class="cert">
+      <header class="cert-head">
+        <Logo size={48} />
+        <div class="cert-title"><p class="eyebrow">Garantía escrita</p><h2>Certificado de garantía</h2></div>
+      </header>
+      <dl class="cert-data">
+        <dt>N.º de pedido</dt><dd data-out="pedido">—</dd>
+        <dt>Cliente</dt><dd data-out="cliente">—</dd>
+        <dt>DNI</dt><dd data-out="dni">—</dd>
+        <dt>Producto</dt><dd data-out="producto">—</dd>
+        <dt>IMEI o serie</dt><dd data-out="serie">—</dd>
+        <dt>Condición</dt><dd data-out="condicion">Nuevo sellado</dd>
+        <dt>Fecha de recepción</dt><dd data-out="entrega">—</dd>
+        <dt>Garantía válida hasta</dt><dd data-out="vence">—</dd>
+      </dl>
+      <h3>Cobertura</h3>
+      <p>Seis (6) meses desde la fecha de recepción por fallas técnicas internas de funcionamiento o defectos de fábrica no atribuibles al mal uso. Ante una falla cubierta, el equipo pasa por una evaluación técnica de 3 a 7 días hábiles. Confirmado el defecto, {SITE.name} lo repara, lo reemplaza por un equipo de iguales características o devuelve el importe pagado, según stock.</p>
+      <h3>No cubre</h3>
+      <ul>
+        <li>Golpes, caídas, aplastamiento, pantallas rotas o fisuradas.</li>
+        <li>Humedad, contacto con líquidos o sulfatación interna.</li>
+        <li>Apertura o intervención por terceros, o sellos de seguridad rotos.</li>
+        <li>Daños por voltaje, sobrecargas o cargadores y cables no certificados.</li>
+        <li>Desgaste natural, incluida la degradación de la batería.</li>
+        <li>Bloqueos de software o cuentas personales (iCloud, Google, PlayStation Network).</li>
+      </ul>
+      <p class="small">Esta garantía comercial no limita los derechos que te reconoce el Código de Protección y Defensa del Consumidor. Para usarla, escríbenos por WhatsApp al {SITE.whatsappDisplay} con tu número de pedido.</p>
+      <footer class="cert-foot small muted">{SITE.name}{providerLine() && <> · {providerLine()}</>} · {SITE.url.replace('https://', '')}</footer>
+    </article>
+  </div>
+</Base>
+<style>
+  .tool { max-width: 820px; margin: 0 auto 32px; }
+  .cert { max-width: 820px; margin: 0 auto; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 40px; }
+  .cert-head { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; border-bottom: 3px solid var(--blue); padding-bottom: 20px; margin-bottom: 24px; }
+  .cert-title { text-align: right; } .cert-title h2 { margin: 0; font-size: 2rem; }
+  .cert-data { display: grid; grid-template-columns: 200px 1fr; gap: 8px 16px; margin: 0 0 24px; }
+  .cert-data dt { font-weight: 600; color: var(--ink-2); } .cert-data dd { margin: 0; }
+  .cert h3 { font-size: 1.2rem; margin-top: 20px; }
+  .cert ul { padding-left: 20px; }
+  .cert-foot { border-top: 1px solid var(--line); margin-top: 24px; padding-top: 12px; }
+  @media (max-width: 640px) { .cert { padding: 20px; } .cert-data { grid-template-columns: 1fr; } .cert-title { text-align: left; } }
+  @media print {
+    :global(header.site-header), :global(footer.footer), :global(.trust), .no-print, :global(.wa-float) { display: none !important; }
+    .cert { border: 0; padding: 0; }
+  }
+</style>
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-cert]')!;
+  const fmt = (d: Date) => d.toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
+  const sync = () => {
+    const f = new FormData(form);
+    for (const [k, v] of f.entries()) { const el = document.querySelector(`[data-out="${k}"]`); if (el && k !== 'entrega') el.textContent = String(v) || '—'; }
+    const raw = String(f.get('entrega') || '');
+    const out = document.querySelector('[data-out="entrega"]')!; const vence = document.querySelector('[data-out="vence"]')!;
+    if (raw) { const d = new Date(raw + 'T00:00:00Z'); out.textContent = fmt(d); const v = new Date(d); v.setUTCMonth(v.getUTCMonth() + 6); vence.textContent = fmt(v); }
+    else { out.textContent = '—'; vence.textContent = '—'; }
+  };
+  form.addEventListener('input', sync);
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+</script>

@@ -32,5 +32,5 @@ import { SITE } from '../../site.config.mjs';
     <li>Por tratarse de equipos electrónicos y artículos de uso personal, no se aceptan devoluciones por cambio de opinión una vez abierto el sello de fábrica (productos nuevos) o tras haber utilizado el artículo.</li>
   </ul>
   <h2>5. Canal de atención y Libro de Reclamaciones</h2>
-  <p>Para gestionar cualquier garantía, cambio o solicitud, escríbenos a nuestro canal oficial indicando tu número de pedido o comprobante: WhatsApp <a href={`https://wa.me/${SITE.whatsapp}`}>{SITE.whatsappDisplay}</a> o correo <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. Conforme a la normativa vigente, ponemos a tu disposición nuestro <a href="/libro-de-reclamaciones/">Libro de Reclamaciones virtual</a>.</p>
+  <p>Para gestionar cualquier garantía, cambio o solicitud, escríbenos a nuestro canal oficial indicando tu número de pedido o comprobante: WhatsApp <a href={`https://wa.me/${SITE.whatsapp}`}>{SITE.whatsappDisplay}</a>{SITE.email && <> o correo <a href={`mailto:${SITE.email}`}>{SITE.email}</a></>}. Conforme a la normativa vigente, ponemos a tu disposición nuestro <a href="/libro-de-reclamaciones/">Libro de Reclamaciones virtual</a>.</p>
 </Help>

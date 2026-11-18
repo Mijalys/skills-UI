@@ -11,11 +11,12 @@
   --cyan: #92eeff;
   --pale: #d8ffc5;
   --mint: #c4f7ca;
-  --blue-deep: #0a7fd1;
+  --blue-deep: #065fa3;
+  --brand-blue: #0a7fd1;
   --blue-ink: #075a94;
   --ink: #0b1b2b;
   --ink-2: #3b4b5b;
-  --ink-3: #6b7a88;
+  --ink-3: #5b6976;
   --bg: #ffffff;
   --surface: #f3f9fd;
   --surface-2: #eaf6fb;
@@ -63,6 +64,8 @@ h1 { font-size: clamp(2.6rem, 7vw, 5.2rem); }
 h2 { font-size: clamp(2rem, 4.5vw, 3.2rem); }
 h3 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); font-weight: 700; }
 h4 { font-size: 1.25rem; font-weight: 700; }
+.h3 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); font-weight: 700; }
+.h4 { font-size: 1.25rem; font-weight: 700; }
 p { margin: 0 0 1em; }
 .lead { font-size: clamp(1.1rem, 1.8vw, 1.35rem); color: var(--ink-2); max-width: 60ch; }
 .muted { color: var(--ink-3); }
@@ -118,6 +121,7 @@ p { margin: 0 0 1em; }
 .badge-seminuevo { background: var(--cyan); color: var(--blue-ink); }
 .badge-oferta { background: var(--ink); color: var(--pale); }
 .badge-soft { background: var(--surface-2); color: var(--ink-2); }
+.badge-agotado { background: #fde2e1; color: #8a1f15; }
 
 /* Tarjetas */
 .card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }

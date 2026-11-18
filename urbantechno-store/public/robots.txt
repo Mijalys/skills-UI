@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /carrito/
+Disallow: /herramientas/
 
 # Asistentes y motores generativos: resumen del sitio en /llms.txt
 Sitemap: https://urbantecstore.com/sitemap-index.xml

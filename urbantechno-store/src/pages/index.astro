@@ -5,7 +5,7 @@ import WaCta from '../components/WaCta.astro';
 import Icons from '../components/Icons.astro';
 import { categories, products, img } from '../data/products';
 import { faqs, faqJsonLd } from '../data/faq';
-import { SITE, waLink } from '../site.config.mjs';
+import { SITE } from '../site.config.mjs';
 const featured = products.filter((p) => p.featured);
 const homeFaqs = faqs.slice(0, 5);
 ---

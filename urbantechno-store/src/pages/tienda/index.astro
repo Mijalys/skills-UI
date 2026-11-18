@@ -26,6 +26,7 @@ const jsonLd = {
     </div>
   </div>
   <div class="container section-tight" style="padding-top:0">
+    <h2 class="sr-only">Productos</h2>
     <div class="grid grid-4" data-products>{products.map((p, i) => <div data-cond={p.condition}><ProductCard p={p} eager={i < 4} /></div>)}</div>
   </div>
 </Base>

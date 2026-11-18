@@ -1,29 +1,52 @@
 # Urbantecstore
 
-Tienda online estática en Astro para Urbantecstore (Perú): celulares, laptops, consolas, zapatillas y lentes de sol.
+Tienda online de urbantecstore.com (Perú): celulares, laptops, consolas, zapatillas y lentes de sol.
+Sitio estático en Astro servido por un Worker de Cloudflare, con pedidos por WhatsApp.
 
 ```sh
 npm install
-npm run dev      # http://localhost:4321
-npm run build    # genera dist/
+npm run dev       # http://localhost:4321
+npm run build     # genera dist/
+npm run deploy    # compila, empaqueta y publica en Cloudflare (necesita CLOUDFLARE_API_TOKEN y CLOUDFLARE_ACCOUNT_ID)
 ```
 
-- Datos de la tienda (WhatsApp, correo, URL): `src/site.config.mjs`
-- Catálogo y categorías: `src/data/products.ts`
-- Preguntas frecuentes: `src/data/faq.ts`
-- Paleta y tipografía (Barlow Condensed / Barlow): `src/styles/global.css`
+## Dónde se edita cada cosa
 
-El pedido se envía por WhatsApp desde el carrito; no hay pasarela de pago integrada.
-SEO: metadatos, canonical, Open Graph, JSON-LD (OnlineStore, Product, FAQPage, BreadcrumbList), sitemap y `robots.txt`.
-GEO: `/llms.txt` con resumen de políticas, categorías y productos.
-Imágenes: Unsplash (referenciales, reemplazar por fotos propias).
+- **Datos de la tienda** (WhatsApp, correo, RUC, razón social, dirección, redes): `src/site.config.mjs`.
+  Lo que está vacío no se muestra en la web.
+- **Catálogo**: `src/data/catalogo.csv`. Se abre en Excel o Google Sheets. Una fila por producto.
+  - `categoria`: celulares, laptops, consolas, zapatillas o lentes-de-sol.
+  - `condicion`: nuevo o seminuevo. Un seminuevo necesita `grado` A o B.
+  - `precio_anterior`: solo si de verdad se cobró ese precio antes. Si no, déjalo vacío.
+  - `stock`: con 0 el producto se muestra como agotado.
+  - `imagen_unsplash`: un ID de Unsplash (se muestra como "Foto referencial") o una foto propia
+    guardada en `public/fotos/` y escrita como `/fotos/nombre.jpg`.
+  - Listas dentro de una celda (especificaciones, incluye, tallas) se separan con ` | `.
+  - Si una fila tiene un error, la compilación se detiene e indica la fila.
+- **Preguntas frecuentes**: `src/data/faq.ts`.
+- **Paleta y tipografía**: `src/styles/global.css`.
 
-## Despliegue en Cloudflare (Worker)
+## Libro de Reclamaciones
 
-El sitio se sirve desde un Worker que lleva `dist/` empaquetado. El token necesita los permisos Account › Workers Scripts › Edit y Zone › Workers Routes › Edit.
+Cada hoja se guarda en un Durable Object de Cloudflare con un número correlativo (LR-AAAA-000001).
+El cliente ve su hoja completa, la descarga o imprime y avisa a la tienda por WhatsApp.
 
-```sh
-npm run build
-node cloudflare/build-worker.mjs
-cd cloudflare && CLOUDFLARE_API_TOKEN=... CLOUDFLARE_ACCOUNT_ID=... npx wrangler deploy
-```
+Para descargar todas las hojas en CSV:
+`https://urbantecstore.com/api/reclamos?clave=<ADMIN_KEY>`
+La clave se configura con `npx wrangler secret put ADMIN_KEY` dentro de `cloudflare/`.
+
+## Certificado de garantía
+
+`https://urbantecstore.com/herramientas/certificado-de-garantia/` genera el certificado de
+garantía escrita para cada pedido. Está oculto para buscadores y no guarda datos.
+
+## Despliegue automático
+
+`.github/workflows/urbantecstore-deploy.yml` publica la tienda en cada cambio cuando el
+repositorio tiene los secretos `CLOUDFLARE_API_TOKEN` y `CLOUDFLARE_ACCOUNT_ID`. Sin ellos, se omite.
+El token necesita: Workers Scripts (Edit) y Workers Routes (Edit) de la zona urbantecstore.com.
+
+## SEO y GEO
+
+Metadatos, canonical, Open Graph con imagen propia (`public/og.jpg`), JSON-LD (OnlineStore,
+Product con política de devolución real, FAQPage, BreadcrumbList), sitemap, robots y `/llms.txt`.

@@ -1,2 +1,3 @@
-worker.js
+site-files.js
 .wrangler/
+.dev.vars

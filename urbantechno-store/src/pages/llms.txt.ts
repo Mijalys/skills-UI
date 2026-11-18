@@ -9,7 +9,7 @@ export const GET: APIRoute = () => {
     '',
     `> ${SITE.description}`,
     '',
-    `Tienda online peruana de venta directa. Moneda: soles (PEN), impuestos incluidos. Pagos: transferencia, Yape, Plin, Agora, tarjeta. Envíos a todo el Perú con código de seguimiento. Atención por WhatsApp ${SITE.whatsappDisplay} y correo ${SITE.email}.`,
+    `Tienda online peruana de venta directa. Moneda: soles (PEN), impuestos incluidos. Pagos: transferencia, Yape, Plin, Agora, tarjeta. Envíos a todo el Perú con código de seguimiento. Atención por WhatsApp ${SITE.whatsappDisplay}${SITE.email ? ` y correo ${SITE.email}` : ''}.`,
     '',
     '## Políticas clave',
     '- Garantía escrita de 6 meses en celulares, laptops y consolas (nuevos y seminuevos certificados), desde la recepción. Cubre fallas internas y defectos de fábrica. No cubre golpes, líquidos, apertura por terceros, cargadores genéricos, desgaste normal ni bloqueos de cuentas.',

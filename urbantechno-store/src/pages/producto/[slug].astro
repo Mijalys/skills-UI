@@ -22,7 +22,11 @@ const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'Product', name: p.name, brand: { '@type': 'Brand', name: p.brand }, image: img(p.image, 1200, 1200), description, sku: p.slug, category: c.name,
     offers: { '@type': 'Offer', url: `${SITE.url}/producto/${p.slug}/`, priceCurrency: 'PEN', price: p.price, availability: p.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
       itemCondition: p.condition === 'nuevo' ? 'https://schema.org/NewCondition' : 'https://schema.org/RefurbishedCondition', seller: { '@id': `${SITE.url}/#org` },
-      shippingDetails: { '@type': 'OfferShippingDetails', shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'PE' } },
+      hasMerchantReturnPolicy: p.category === 'zapatillas'
+        ? { '@type': 'MerchantReturnPolicy', applicableCountry: 'PE', returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow', merchantReturnDays: 7, returnMethod: 'https://schema.org/ReturnByMail',
+            itemDefectReturnFees: 'https://schema.org/FreeReturn', customerRemorseReturnFees: 'https://schema.org/ReturnShippingFees', url: `${SITE.url}/ayuda/cambios-y-devoluciones/` }
+        : { '@type': 'MerchantReturnPolicy', applicableCountry: 'PE', returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow', merchantReturnDays: 2, returnMethod: 'https://schema.org/ReturnByMail',
+            itemDefectReturnFees: 'https://schema.org/FreeReturn', url: `${SITE.url}/ayuda/cambios-y-devoluciones/` },
       ...(tech ? { warranty: { '@type': 'WarrantyPromise', durationOfWarranty: { '@type': 'QuantitativeValue', value: 6, unitCode: 'MON' } } } : {}) } },
   { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE.url }, { '@type': 'ListItem', position: 2, name: c.name, item: `${SITE.url}/tienda/${c.slug}/` }, { '@type': 'ListItem', position: 3, name: p.name, item: `${SITE.url}/producto/${p.slug}/` } ] },
@@ -33,14 +37,14 @@ const jsonLd = [
   <article class="container pd">
     <div class="pd-media">
       <img src={img(p.image, 1000, 1000)} srcset={`${img(p.image, 600, 600)} 600w, ${img(p.image, 1000, 1000)} 1000w`} sizes="(max-width: 900px) 100vw, 560px" alt={p.alt} width="1000" height="1000" fetchpriority="high" decoding="async" />
-      <p class="small muted">Foto referencial del modelo. En seminuevos enviamos fotos reales del equipo por WhatsApp antes de confirmar.</p>
+      {p.stockPhoto ? <p class="small muted">Foto referencial: no es el equipo exacto. {p.condition === 'seminuevo' ? 'Antes de confirmar te enviamos por WhatsApp fotos reales del equipo que recibirás.' : 'Si quieres ver el producto real antes de comprar, pídenos fotos por WhatsApp.'}</p> : p.condition === 'seminuevo' && <p class="small muted">Foto del equipo real que recibirás.</p>}
     </div>
     <div class="pd-info">
       <p class="pd-brand">{p.brand} · {c.name}</p>
       <h1>{p.name}</h1>
       <div class="flex">
         <span class={`badge badge-${p.condition}`}>{condText}</span>
-        {p.stock <= 2 && <span class="badge badge-oferta">Quedan {p.stock}</span>}
+        {p.stock === 0 && <span class="badge badge-agotado">Agotado</span>}
       </div>
       <p class="pd-price"><span>{soles(p.price)}</span>{p.oldPrice && <s>{soles(p.oldPrice)}</s>}</p>
       <p class="small muted">Impuestos incluidos. Envío se cotiza según tu ciudad.</p>
@@ -59,8 +63,12 @@ const jsonLd = [
       )}
 
       <div class="pd-ctas">
+        {p.stock === 0 ? (
+          <a class="btn btn-wa btn-block" href={waLink(`Hola, ¿cuándo vuelven a tener ${p.name}?`)} target="_blank" rel="noopener"><Icons name="wa" />Avísame cuando llegue</a>
+        ) : (<>
         <button class="btn btn-primary btn-block" type="button" data-add data-slug={p.slug} data-name={p.name} data-price={p.price} data-image={img(p.image, 200, 200)}><Icons name="cart" />Agregar al carrito</button>
         <a class="btn btn-wa btn-block" href={waLink(waMsg)} target="_blank" rel="noopener"><Icons name="wa" />Comprar por WhatsApp</a>
+        </>)}
       </div>
       <p class="toast" data-toast hidden>Agregado al carrito. <a href="/carrito/">Ver carrito</a></p>
 

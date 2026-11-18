@@ -12,7 +12,7 @@ const { title = '¿Tienes dudas? Escríbenos', text = 'Respondemos por WhatsApp 
     </div>
     <div class="flex">
       <a class="btn btn-wa" href={waLink(message)} target="_blank" rel="noopener"><Icons name="wa" />WhatsApp {SITE.whatsappDisplay}</a>
-      <a class="btn btn-outline" href={`mailto:${SITE.email}`}>Correo</a>
+      {SITE.email && <a class="btn btn-outline" href={`mailto:${SITE.email}`}>Correo</a>}
     </div>
   </div>
 </section>

@@ -37,7 +37,7 @@ import { SITE } from '../../site.config.mjs';
   <h2>8. Contacto y reclamos</h2>
   <ul>
     <li>WhatsApp: <a href={`https://wa.me/${SITE.whatsapp}`}>{SITE.whatsappDisplay}</a></li>
-    <li>Correo: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
+    {SITE.email && <li>Correo: <a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>}
     <li><a href="/libro-de-reclamaciones/">Libro de Reclamaciones virtual</a>, conforme a la normativa de Indecopi.</li>
   </ul>
 </Help>

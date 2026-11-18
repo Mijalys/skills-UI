@@ -28,11 +28,11 @@ const ld = jsonLd ? [crumbs, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : c
     </article>
     <aside class="side">
       <div class="card card-pad">
-        <h4>{section}</h4>
+        <h2 class="h4">{section}</h2>
         <ul class="side-links">{links.map(([href, name]) => <li><a href={href} aria-current={path === href ? 'page' : undefined}>{name}</a></li>)}</ul>
       </div>
       <div class="card card-pad side-wa">
-        <h4>¿Necesitas ayuda?</h4>
+        <h2 class="h4">¿Necesitas ayuda?</h2>
         <p class="small">Escríbenos por WhatsApp con tu número de pedido.</p>
         <a class="btn btn-wa btn-sm" href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(waMessage ?? 'Hola, tengo una consulta.')}`} target="_blank" rel="noopener">WhatsApp</a>
       </div>
@@ -43,7 +43,7 @@ const ld = jsonLd ? [crumbs, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])] : c
 <style>
   .help-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 48px; align-items: start; padding-bottom: 56px; }
   .side { position: sticky; top: 90px; display: grid; gap: 16px; }
-  .side h4 { font-size: 1rem; letter-spacing: 0.1em; margin-bottom: 10px; }
+  .side .h4 { font-size: 1rem; letter-spacing: 0.1em; margin-bottom: 10px; }
   .side-links { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
   .side-links a { text-decoration: none; color: var(--ink-2); display: block; padding: 6px 10px; border-radius: 8px; }
   .side-links a:hover { background: var(--surface-2); }

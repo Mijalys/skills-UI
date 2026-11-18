@@ -17,3 +17,13 @@ El pedido se envía por WhatsApp desde el carrito; no hay pasarela de pago integ
 SEO: metadatos, canonical, Open Graph, JSON-LD (OnlineStore, Product, FAQPage, BreadcrumbList), sitemap y `robots.txt`.
 GEO: `/llms.txt` con resumen de políticas, categorías y productos.
 Imágenes: Unsplash (referenciales, reemplazar por fotos propias).
+
+## Despliegue en Cloudflare (Worker)
+
+El sitio se sirve desde un Worker que lleva `dist/` empaquetado. El token necesita los permisos Account › Workers Scripts › Edit y Zone › Workers Routes › Edit.
+
+```sh
+npm run build
+node cloudflare/build-worker.mjs
+cd cloudflare && CLOUDFLARE_API_TOKEN=... CLOUDFLARE_ACCOUNT_ID=... npx wrangler deploy
+```

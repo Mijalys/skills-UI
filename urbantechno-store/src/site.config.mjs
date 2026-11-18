@@ -2,7 +2,7 @@
 export const SITE = {
   name: 'Urbantechno_store',
   shortName: 'Urbantechno',
-  url: 'https://urbantechno-store.vercel.app',
+  url: 'https://urbantecstore.com',
   tagline: 'Tecnología, zapatillas y lentes 100 % originales con garantía escrita.',
   description:
     'Tienda online en Perú de celulares, laptops, consolas, zapatillas y lentes de sol 100 % originales, nuevos sellados o seminuevos certificados. Garantía escrita de 6 meses y envíos a todo el Perú.',

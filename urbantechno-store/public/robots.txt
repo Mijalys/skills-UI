@@ -3,4 +3,4 @@ Allow: /
 Disallow: /carrito/
 
 # Asistentes y motores generativos: resumen del sitio en /llms.txt
-Sitemap: https://urbantechno-store.vercel.app/sitemap-index.xml
+Sitemap: https://urbantecstore.com/sitemap-index.xml

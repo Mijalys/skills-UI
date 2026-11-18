@@ -2,6 +2,6 @@
 import Help from '../../layouts/Help.astro';
 import { faqs, faqJsonLd } from '../../data/faq';
 ---
-<Help title="Preguntas frecuentes" description="Respuestas cortas sobre originalidad, seminuevos, pagos, envíos, garantía, cambios y reclamos en Urbantechno_store." summary={['Todo es 100 % original: nuevo sellado o seminuevo certificado.', 'Garantía de 6 meses en tecnología. Cambio de talla en 7 días en zapatillas.', 'Pedidos y atención por WhatsApp. Reclamos en el Libro de Reclamaciones virtual.']} jsonLd={faqJsonLd(faqs)}>
+<Help title="Preguntas frecuentes" description="Respuestas cortas sobre originalidad, seminuevos, pagos, envíos, garantía, cambios y reclamos en Urbantecstore." summary={['Todo es 100 % original: nuevo sellado o seminuevo certificado.', 'Garantía de 6 meses en tecnología. Cambio de talla en 7 días en zapatillas.', 'Pedidos y atención por WhatsApp. Reclamos en el Libro de Reclamaciones virtual.']} jsonLd={faqJsonLd(faqs)}>
   {faqs.map((f) => <details class="faq"><summary>{f.q}</summary><p>{f.a}</p></details>)}
 </Help>

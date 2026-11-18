@@ -1,6 +1,6 @@
-# Urbantechno_store
+# Urbantecstore
 
-Tienda online estática en Astro para Urbantechno_store (Perú): celulares, laptops, consolas, zapatillas y lentes de sol.
+Tienda online estática en Astro para Urbantecstore (Perú): celulares, laptops, consolas, zapatillas y lentes de sol.
 
 ```sh
 npm install

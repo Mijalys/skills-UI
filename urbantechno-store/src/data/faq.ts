@@ -10,7 +10,7 @@ export const faqs: Faq[] = [
   { q: '¿Puedo cambiar la talla de mis zapatillas?', a: 'Sí, dentro de los 7 días calendario desde que las recibes, siempre que estén sin uso, limpias, con etiquetas y caja original intactas. El envío del cambio lo pagas tú y depende del stock disponible.' },
   { q: '¿Puedo devolver un producto si cambié de opinión?', a: 'No, una vez abierto el sello de fábrica o usado el artículo. Son equipos electrónicos y productos de uso personal. Si recibiste algo distinto o con falla evidente, repórtalo en 48 horas y nosotros asumimos los envíos.' },
   { q: '¿Reciben mi equipo usado como parte de pago?', a: 'No. Solo vendemos de forma directa, no recibimos equipos usados ni hacemos canjes.' },
-  { q: '¿Reparan equipos?', a: 'No ofrecemos servicio técnico externo ni mantenimiento. La evaluación técnica aplica solo a productos comprados en Urbantechno_store dentro de su garantía.' },
+  { q: '¿Reparan equipos?', a: 'No ofrecemos servicio técnico externo ni mantenimiento. La evaluación técnica aplica solo a productos comprados en Urbantecstore dentro de su garantía.' },
   { q: '¿Dónde presento un reclamo?', a: 'En nuestro Libro de Reclamaciones virtual, enlazado en el pie de página, conforme a la normativa de Indecopi. También puedes escribirnos por WhatsApp o correo.' },
 ];
 export const faqJsonLd = (list: Faq[]) => ({

@@ -1,7 +1,7 @@
 // Datos de la tienda. Cambia aquí el número de WhatsApp, el correo y la URL final.
 export const SITE = {
-  name: 'Urbantechno_store',
-  shortName: 'Urbantechno',
+  name: 'Urbantecstore',
+  shortName: 'Urbantecstore',
   url: 'https://urbantecstore.com',
   tagline: 'Tecnología, zapatillas y lentes 100 % originales con garantía escrita.',
   description:
@@ -9,11 +9,11 @@ export const SITE = {
   // Reemplazar por el número oficial, solo dígitos con código de país.
   whatsapp: '51999999999',
   whatsappDisplay: '+51 999 999 999',
-  email: 'hola@urbantechno.store',
+  email: 'hola@urbantecstore.com',
   hours: 'Lun a Sáb, 9:00 a 19:00',
   city: 'Lima, Perú',
-  instagram: 'https://www.instagram.com/urbantechno_store',
-  tiktok: 'https://www.tiktok.com/@urbantechno_store',
+  instagram: 'https://www.instagram.com/urbantecstore',
+  tiktok: 'https://www.tiktok.com/@urbantecstore',
   updated: 'Noviembre de 2026',
 };
 
